@@ -1,0 +1,18 @@
+﻿
+> blog_app@0.0.0 test
+> vitest --run src/composables/__tests__/useComments.property.test.ts Property 25
+
+
+[1m[46m RUN [49m[22m [36mv4.0.14 [39m[90mC:/Users/Admin/Desktop/ASM_308/blog_app[39m
+
+ [32m✓[39m src/composables/__tests__/useComments.property.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 77346[2mms[22m[39m
+     [33m[2m✓[22m[39m Property 10: Comment creation includes metadata [33m 12185[2mms[22m[39m
+     [33m[2m✓[22m[39m Property 12: Comments are sorted by timestamp descending [33m 24122[2mms[22m[39m
+     [33m[2m✓[22m[39m Property 28: Comments sorted by timestamp ascending [33m 24217[2mms[22m[39m
+     [33m[2m✓[22m[39m Property 25: Inline comment creation without navigation [33m 15808[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 06:54:08
+[2m   Duration [22m 79.28s[2m (transform 100ms, setup 0ms, import 568ms, tests 77.35s, environment 1.11s)[22m
+

@@ -1,0 +1,273 @@
+{
+  "friendRequests": [
+    {
+      "id": "7d2c",
+      "senderId": "user-2",
+      "receiverId": "user-1",
+      "status": "accepted",
+      "createdAt": "2025-11-30T15:40:35.824Z"
+    },
+    {
+      "id": "9073",
+      "senderId": "user-2",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-11-30T15:40:36.930Z"
+    },
+    {
+      "id": "957b",
+      "senderId": "user-1",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-11-30T15:40:59.140Z"
+    }
+  ],
+  "friendships": [
+    {
+      "id": "5c34",
+      "userId1": "user-2",
+      "userId2": "user-1",
+      "createdAt": "2025-11-30T15:40:56.870Z"
+    },
+    {
+      "id": "9444",
+      "userId1": "user-2",
+      "userId2": "user-3",
+      "createdAt": "2025-11-30T15:41:27.635Z"
+    },
+    {
+      "id": "ba72",
+      "userId1": "user-1",
+      "userId2": "user-3",
+      "createdAt": "2025-11-30T15:41:28.510Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-1",
+      "name": "Nguyễn Văn An",
+      "email": "an.nguyen@example.com",
+      "password": "password123",
+      "avatar": "https://i.pravatar.cc/150?img=1",
+      "intro": "Yêu thích công nghệ và lập trình. Đam mê chia sẻ kiến thức về Vue.js và JavaScript."
+    },
+    {
+      "id": "user-2",
+      "name": "Trần Thị Bình",
+      "email": "binh.tran@example.com",
+      "password": "password123",
+      "avatar": "https://i.pravatar.cc/150?img=5",
+      "intro": "Designer và developer. Thích tạo ra những giao diện đẹp và trải nghiệm người dùng tuyệt vời."
+    },
+    {
+      "id": "user-3",
+      "name": "Lê Minh Cường",
+      "email": "cuong.le@example.com",
+      "password": "password123",
+      "avatar": "https://i.pravatar.cc/150?img=8",
+      "intro": "Full-stack developer với 5 năm kinh nghiệm. Chuyên về Node.js và Vue.js."
+    }
+  ],
+  "posts": [
+    {
+      "id": "post-1",
+      "userId": "user-1",
+      "title": "Giới thiệu về Vue 3 Composition API",
+      "content": "Vue 3 Composition API là một cách mới để tổ chức code trong Vue.js. Nó giúp code dễ đọc, dễ bảo trì và có thể tái sử dụng tốt hơn. Trong bài viết này, tôi sẽ chia sẻ những kinh nghiệm của mình khi sử dụng Composition API.",
+      "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
+      "createdAt": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "id": "post-2",
+      "userId": "user-2",
+      "title": "Thiết kế UI/UX cho ứng dụng web hiện đại",
+      "content": "Một giao diện đẹp không chỉ là về màu sắc và hình ảnh. Nó còn về trải nghiệm người dùng, tính nhất quán và khả năng tiếp cận. Hãy cùng tìm hiểu các nguyên tắc thiết kế UI/UX cơ bản.",
+      "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800",
+      "createdAt": "2024-01-14T15:45:00.000Z"
+    },
+    {
+      "id": "post-3",
+      "userId": "user-3",
+      "title": "Best Practices cho RESTful API",
+      "content": "Khi xây dựng API, việc tuân thủ các best practices là rất quan trọng. Điều này giúp API dễ sử dụng, dễ bảo trì và mở rộng. Trong bài này, tôi sẽ chia sẻ những kinh nghiệm của mình về RESTful API design.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
+      "createdAt": "2024-01-13T09:20:00.000Z"
+    },
+    {
+      "id": "1764515954341-gf7jhgmco",
+      "userId": "user-3",
+      "title": "Giới thiệu về Vue 3 Composition API",
+      "content": "Vue 3 Composition API là một cách mới để tổ chức code trong Vue.js. Nó giúp code dễ đọc, dễ bảo trì và có thể tái sử dụng tốt hơn. Trong bài viết này, tôi sẽ chia sẻ những kinh nghiệm của mình khi sử dụng Composition API.",
+      "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
+      "sharedFromId": "post-1",
+      "createdAt": "2025-11-30T15:19:14.341Z"
+    },
+    {
+      "id": "1764516348755-vujxxs4hd",
+      "userId": "user-2",
+      "title": "Giới thiệu về Vue 3 Composition API",
+      "content": "Vue 3 Composition API là một cách mới để tổ chức code trong Vue.js. Nó giúp code dễ đọc, dễ bảo trì và có thể tái sử dụng tốt hơn. Trong bài viết này, tôi sẽ chia sẻ những kinh nghiệm của mình khi sử dụng Composition API.",
+      "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
+      "sharedFromId": "post-1",
+      "createdAt": "2025-11-30T15:25:48.755Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "comment-1",
+      "postId": "post-1",
+      "userId": "user-2",
+      "content": "Bài viết rất hay! Tôi đã áp dụng Composition API vào dự án của mình và thấy code sạch hơn rất nhiều.",
+      "parentId": null,
+      "createdAt": "2024-01-15T11:00:00.000Z"
+    },
+    {
+      "id": "comment-2",
+      "postId": "post-1",
+      "userId": "user-3",
+      "content": "Cảm ơn bạn đã chia sẻ! Bạn có thể viết thêm về Vue 3 Reactivity API không?",
+      "parentId": null,
+      "createdAt": "2024-01-15T12:30:00.000Z"
+    },
+    {
+      "id": "comment-3",
+      "postId": "post-2",
+      "userId": "user-1",
+      "content": "Thiết kế của bạn luôn rất đẹp và chuyên nghiệp. Tôi học được nhiều từ bạn!",
+      "parentId": null,
+      "createdAt": "2024-01-14T16:15:00.000Z"
+    },
+    {
+      "id": "1764515995486-8su1zepfy",
+      "userId": "user-3",
+      "postId": "post-1",
+      "content": "Bài viết tuyệt vời",
+      "parentId": null,
+      "createdAt": "2025-11-30T15:19:55.486Z"
+    }
+  ],
+  "likes": [
+    {
+      "id": "like-1",
+      "postId": "post-1",
+      "userId": "user-2",
+      "createdAt": "2024-01-15T10:35:00.000Z"
+    },
+    {
+      "id": "like-2",
+      "postId": "post-1",
+      "userId": "user-3",
+      "createdAt": "2024-01-15T11:20:00.000Z"
+    },
+    {
+      "id": "like-3",
+      "postId": "post-2",
+      "userId": "user-1",
+      "createdAt": "2024-01-14T16:00:00.000Z"
+    }
+  ],
+  "shares": [
+    {
+      "id": "share-1",
+      "postId": "post-1",
+      "userId": "user-3",
+      "createdAt": "2024-01-15T13:00:00.000Z"
+    },
+    {
+      "id": "share-2",
+      "postId": "post-2",
+      "userId": "user-1",
+      "createdAt": "2024-01-14T17:30:00.000Z"
+    },
+    {
+      "id": "share-3",
+      "postId": "post-3",
+      "userId": "user-2",
+      "createdAt": "2024-01-13T10:45:00.000Z"
+    },
+    {
+      "id": "1764515954351-0gzbg91wm",
+      "postId": "post-1",
+      "userId": "user-3",
+      "createdAt": "2025-11-30T15:19:14.351Z"
+    },
+    {
+      "id": "1764516348764-th3clwcp9",
+      "postId": "post-1",
+      "userId": "user-2",
+      "createdAt": "2025-11-30T15:25:48.764Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "message-1",
+      "senderId": "user-1",
+      "receiverId": "user-2",
+      "content": "Chào Bình! Tôi rất thích thiết kế của bạn. Bạn có thể tư vấn cho tôi về màu sắc cho dự án mới không?",
+      "createdAt": "2024-01-15T14:00:00.000Z"
+    },
+    {
+      "id": "message-2",
+      "senderId": "user-2",
+      "receiverId": "user-1",
+      "content": "Chào An! Cảm ơn bạn nhé. Tất nhiên rồi, tôi rất vui được giúp đỡ. Bạn có thể gửi mockup cho tôi xem không?",
+      "createdAt": "2024-01-15T14:15:00.000Z"
+    },
+    {
+      "id": "message-3",
+      "senderId": "user-3",
+      "receiverId": "user-1",
+      "content": "Anh ơi, em có thể hỏi về cách implement authentication trong Vue 3 không ạ?",
+      "createdAt": "2024-01-15T15:30:00.000Z"
+    },
+    {
+      "id": "1764515856001-ai7e61nnv",
+      "senderId": "user-1",
+      "receiverId": "user-3",
+      "content": "ok em hỏi đi",
+      "createdAt": "2025-11-30T15:17:36.001Z"
+    },
+    {
+      "id": "1764516034390-hxoyha11l",
+      "senderId": "user-3",
+      "receiverId": "user-1",
+      "content": "ý là làm sao để implement authentication trong vue 3 á a",
+      "createdAt": "2025-11-30T15:20:34.390Z"
+    },
+    {
+      "id": "1764516089578-ur9uhnsif",
+      "senderId": "user-1",
+      "receiverId": "user-3",
+      "content": "Cách A (đơn giản, dev / SPA): Lưu JWT vào localStorage (hoặc sessionStorage). Dễ triển khai nhưng ít an toàn (dính XSS).  Cách B (khuyến nghị cho production): Lưu token trong HTTP-only Secure cookie (do backend set), trình duyệt tự gửi cookie; frontend dùng axios + CSRF/refresh. An toàn hơn chống XSS.",
+      "createdAt": "2025-11-30T15:21:29.578Z"
+    },
+    {
+      "id": "1764516177921-rrwri0s6b",
+      "senderId": "user-3",
+      "receiverId": "user-1",
+      "content": "dạ em cảm ơn anh nhiều ạ",
+      "createdAt": "2025-11-30T15:22:57.921Z"
+    },
+    {
+      "id": "1764516190471-pxnldr93g",
+      "senderId": "user-1",
+      "receiverId": "user-3",
+      "content": "k có gì em",
+      "createdAt": "2025-11-30T15:23:10.471Z"
+    },
+    {
+      "id": "1764516212171-8mleh9dt0",
+      "senderId": "user-1",
+      "receiverId": "user-3",
+      "content": "cố gắng lên nhé",
+      "createdAt": "2025-11-30T15:23:32.171Z"
+    },
+    {
+      "id": "1764516219662-ub2njekm0",
+      "senderId": "user-3",
+      "receiverId": "user-1",
+      "content": "dạ",
+      "createdAt": "2025-11-30T15:23:39.662Z"
+    }
+  ]
+}

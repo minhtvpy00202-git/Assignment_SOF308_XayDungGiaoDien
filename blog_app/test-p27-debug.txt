@@ -1,0 +1,7 @@
+﻿
+> blog_app@0.0.0 test
+> vitest --run useComments.property.test.ts Property 27
+
+
+[1m[46m RUN [49m[22m [36mv4.0.14 [39m[90mC:/Users/Admin/Desktop/ASM_308/blog_app[39m
+
