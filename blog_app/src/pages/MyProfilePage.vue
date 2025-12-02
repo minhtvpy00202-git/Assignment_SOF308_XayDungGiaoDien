@@ -6,7 +6,7 @@
         <div class="card">
           <div class="card-header bg-primary text-white">
             <h5 class="mb-0">
-              <i class="bi bi-person-circle me-2"></i>Edit Profile
+              <i class="bi bi-person-circle me-2"></i>{{ t('profile.editProfile') }}
             </h5>
           </div>
           <div class="card-body">
@@ -24,14 +24,14 @@
 
             <form @submit.prevent="handleUpdateProfile">
               <div class="mb-3">
-                <label for="name" class="form-label fw-semibold">Name</label>
+                <label for="name" class="form-label fw-semibold">{{ t('profile.name') }}</label>
                 <input
                   id="name"
                   v-model="formData.name"
                   type="text"
                   class="form-control"
                   :class="{ 'is-invalid': errors.name }"
-                  placeholder="Your name"
+                  :placeholder="t('profile.name')"
                 />
                 <div v-if="errors.name" class="invalid-feedback">
                   {{ errors.name }}
@@ -39,14 +39,14 @@
               </div>
 
               <div class="mb-3">
-                <label for="email" class="form-label fw-semibold">Email</label>
+                <label for="email" class="form-label fw-semibold">{{ t('profile.email') }}</label>
                 <input
                   id="email"
                   v-model="formData.email"
                   type="email"
                   class="form-control"
                   :class="{ 'is-invalid': errors.email }"
-                  placeholder="your.email@example.com"
+                  :placeholder="t('profile.email')"
                 />
                 <div v-if="errors.email" class="invalid-feedback">
                   {{ errors.email }}
@@ -55,7 +55,7 @@
 
               <div class="mb-3">
                 <label for="password" class="form-label fw-semibold">
-                  Password <span class="text-muted fw-normal">(leave blank to keep current)</span>
+                  {{ t('profile.password') }}
                 </label>
                 <input
                   id="password"
@@ -63,7 +63,7 @@
                   type="password"
                   class="form-control"
                   :class="{ 'is-invalid': errors.password }"
-                  placeholder="New password"
+                  :placeholder="t('profile.password')"
                 />
                 <div v-if="errors.password" class="invalid-feedback">
                   {{ errors.password }}
@@ -71,7 +71,7 @@
               </div>
 
               <div class="mb-3">
-                <label for="avatar" class="form-label fw-semibold">Avatar URL</label>
+                <label for="avatar" class="form-label fw-semibold">{{ t('profile.avatar') }}</label>
                 <input
                   id="avatar"
                   v-model="formData.avatar"
@@ -79,17 +79,16 @@
                   class="form-control"
                   placeholder="https://example.com/avatar.jpg"
                 />
-                <small class="form-text text-muted">Enter a URL for your profile picture</small>
               </div>
 
               <div class="mb-3">
-                <label for="intro" class="form-label fw-semibold">Intro</label>
+                <label for="intro" class="form-label fw-semibold">{{ t('profile.intro') }}</label>
                 <textarea
                   id="intro"
                   v-model="formData.intro"
                   class="form-control"
                   rows="3"
-                  placeholder="Tell us about yourself..."
+                  :placeholder="t('profile.intro')"
                 ></textarea>
               </div>
 
@@ -100,7 +99,7 @@
               >
                 <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                 <i v-else class="bi bi-save me-2"></i>
-                Update Profile
+                {{ t('profile.save') }}
               </button>
             </form>
           </div>
@@ -113,9 +112,9 @@
           <div class="card-header bg-white border-bottom">
             <div class="d-flex justify-content-between align-items-center">
               <h5 class="mb-0">
-                <i class="bi bi-file-text me-2"></i>My Posts
+                <i class="bi bi-file-text me-2"></i>{{ t('profile.myPosts') }}
               </h5>
-              <span class="badge bg-primary">{{ posts.length }} {{ posts.length === 1 ? 'post' : 'posts' }}</span>
+              <span class="badge bg-primary">{{ posts.length }} {{ t('profile.posts') }}</span>
             </div>
           </div>
         </div>
@@ -123,9 +122,9 @@
         <!-- Loading posts -->
         <div v-if="postsLoading" class="text-center py-4">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading posts...</span>
+            <span class="visually-hidden">{{ t('common.loading') }}</span>
           </div>
-          <p class="mt-2 text-muted">Loading your posts...</p>
+          <p class="mt-2 text-muted">{{ t('common.loading') }}</p>
         </div>
 
         <!-- No posts message -->
@@ -133,9 +132,9 @@
           <div class="card">
             <div class="card-body">
               <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-              <p class="text-muted mb-3 mt-2">You haven't created any posts yet</p>
+              <p class="text-muted mb-3 mt-2">{{ t('post.noPostsYet') }}</p>
               <router-link to="/posts/create" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>Create Your First Post
+                <i class="bi bi-plus-circle me-2"></i>{{ t('navbar.createPost') }}
               </router-link>
             </div>
           </div>
@@ -163,6 +162,7 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 import { useUser } from '../composables/useUser'
 import { usePosts } from '../composables/usePosts'
+import { useLocale } from '../composables/useLocale'
 import PostCard from '../components/PostCard.vue'
 import type { UpdateUserData } from '../types'
 
@@ -170,6 +170,7 @@ const router = useRouter()
 const { currentUser, checkAuth } = useAuth()
 const { updateUser } = useUser()
 const { posts, loading: postsLoading, fetchPostsByUserId, deletePost } = usePosts()
+const { t } = useLocale()
 
 const formData = reactive({
   name: '',
@@ -223,26 +224,26 @@ const validateForm = (): boolean => {
 
   // Validate name
   if (!formData.name || !formData.name.trim()) {
-    errors.name = 'Name is required'
+    errors.name = t('validation.required')
     isValid = false
   }
 
   // Validate email
   if (!formData.email || !formData.email.trim()) {
-    errors.email = 'Email is required'
+    errors.email = t('validation.required')
     isValid = false
   } else {
     // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
-      errors.email = 'Please enter a valid email address'
+      errors.email = t('validation.emailInvalid')
       isValid = false
     }
   }
 
   // Validate password (only if provided)
   if (formData.password && !formData.password.trim()) {
-    errors.password = 'Password cannot be empty or whitespace only'
+    errors.password = t('validation.required')
     isValid = false
   }
 

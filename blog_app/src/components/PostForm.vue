@@ -3,7 +3,7 @@
     <form @submit.prevent="handleSubmit">
       <div class="mb-4">
         <label for="title" class="form-label fw-semibold">
-          <i class="bi bi-type me-2"></i>Title
+          <i class="bi bi-type me-2"></i>{{ t('post.title') }}
         </label>
         <input
           id="title"
@@ -11,7 +11,7 @@
           type="text"
           class="form-control form-control-lg"
           :class="{ 'is-invalid': errors.title }"
-          placeholder="Enter an engaging title..."
+          :placeholder="t('post.title')"
         />
         <div v-if="errors.title" class="invalid-feedback">
           {{ errors.title }}
@@ -20,7 +20,7 @@
 
       <div class="mb-4">
         <label for="content" class="form-label fw-semibold">
-          <i class="bi bi-text-paragraph me-2"></i>Content
+          <i class="bi bi-text-paragraph me-2"></i>{{ t('post.content') }}
         </label>
         <textarea
           id="content"
@@ -28,7 +28,7 @@
           class="form-control"
           :class="{ 'is-invalid': errors.content }"
           rows="8"
-          placeholder="Share your thoughts..."
+          :placeholder="t('post.content')"
         ></textarea>
         <div v-if="errors.content" class="invalid-feedback">
           {{ errors.content }}
@@ -37,7 +37,7 @@
 
       <div class="mb-4">
         <label for="image" class="form-label fw-semibold">
-          <i class="bi bi-image me-2"></i>Image URL <span class="text-muted fw-normal">(optional)</span>
+          <i class="bi bi-image me-2"></i>{{ t('post.image') }}
         </label>
         <input
           id="image"
@@ -46,7 +46,6 @@
           class="form-control"
           placeholder="https://example.com/image.jpg"
         />
-        <small class="form-text text-muted">Add an image to make your post more engaging</small>
       </div>
 
       <div v-if="generalError" class="alert alert-danger" role="alert">
@@ -69,7 +68,7 @@
           @click="handleCancel"
           :disabled="isSubmitting"
         >
-          <i class="bi bi-x-circle me-2"></i>Cancel
+          <i class="bi bi-x-circle me-2"></i>{{ t('post.cancel') }}
         </button>
       </div>
     </form>
@@ -79,6 +78,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import type { Post, CreatePostData, UpdatePostData } from '../types'
+import { useLocale } from '../composables/useLocale'
 
 interface Props {
   initialData?: Post
@@ -95,6 +95,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<Emits>()
+const { t } = useLocale()
 
 const formData = reactive({
   title: '',
@@ -136,13 +137,13 @@ const validateForm = (): boolean => {
 
   // Validate title
   if (!formData.title || !formData.title.trim()) {
-    errors.title = 'Title is required'
+    errors.title = t('validation.required')
     isValid = false
   }
 
   // Validate content
   if (!formData.content || !formData.content.trim()) {
-    errors.content = 'Content is required'
+    errors.content = t('validation.required')
     isValid = false
   }
 

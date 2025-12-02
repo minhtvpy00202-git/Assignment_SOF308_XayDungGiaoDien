@@ -7,13 +7,13 @@
             <div class="card-header bg-white border-bottom py-3">
               <div class="d-flex align-items-center">
                 <i class="bi bi-pencil-square text-primary fs-4 me-3"></i>
-                <h2 class="mb-0 fw-bold">Create New Post</h2>
+                <h2 class="mb-0 fw-bold">{{ t('post.createPost') }}</h2>
               </div>
             </div>
             <div class="card-body p-4">
               <PostForm
                 ref="postFormRef"
-                submit-button-text="Create Post"
+                :submit-button-text="t('post.submit')"
                 @submit="handleCreatePost"
                 @cancel="handleCancel"
               />
@@ -30,10 +30,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import PostForm from '../components/PostForm.vue'
 import { usePosts } from '../composables/usePosts'
+import { useLocale } from '../composables/useLocale'
 import type { CreatePostData, UpdatePostData } from '../types'
 
 const router = useRouter()
 const { createPost } = usePosts()
+const { t } = useLocale()
 const postFormRef = ref<InstanceType<typeof PostForm> | null>(null)
 
 const handleCreatePost = async (postData: CreatePostData | UpdatePostData) => {

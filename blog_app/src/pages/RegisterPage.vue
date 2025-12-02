@@ -6,21 +6,21 @@
           <div class="card shadow-lg">
             <div class="card-body p-4 p-md-5">
               <div class="text-center mb-4">
-                <h2 class="card-title fw-bold mb-2">Create Account</h2>
-                <p class="text-muted">Join our community today</p>
+                <h2 class="card-title fw-bold mb-2">{{ t('auth.registerTitle') }}</h2>
+                <p class="text-muted">{{ t('auth.registerTitle') }}</p>
               </div>
             
             <form @submit.prevent="handleSubmit">
               <!-- Name Field -->
               <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
+                <label for="name" class="form-label">{{ t('auth.name') }}</label>
                 <input
                   type="text"
                   class="form-control"
                   :class="{ 'is-invalid': errors.name }"
                   id="name"
                   v-model="formData.name"
-                  placeholder="Enter your name"
+                  :placeholder="t('auth.name')"
                 />
                 <div v-if="errors.name" class="invalid-feedback">
                   {{ errors.name }}
@@ -29,14 +29,14 @@
 
               <!-- Email Field -->
               <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">{{ t('auth.email') }}</label>
                 <input
                   type="email"
                   class="form-control"
                   :class="{ 'is-invalid': errors.email }"
                   id="email"
                   v-model="formData.email"
-                  placeholder="Enter your email"
+                  :placeholder="t('auth.email')"
                 />
                 <div v-if="errors.email" class="invalid-feedback">
                   {{ errors.email }}
@@ -45,14 +45,14 @@
 
               <!-- Password Field -->
               <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label">{{ t('auth.password') }}</label>
                 <input
                   type="password"
                   class="form-control"
                   :class="{ 'is-invalid': errors.password }"
                   id="password"
                   v-model="formData.password"
-                  placeholder="Enter your password"
+                  :placeholder="t('auth.password')"
                 />
                 <div v-if="errors.password" class="invalid-feedback">
                   {{ errors.password }}
@@ -72,16 +72,16 @@
               >
                 <span v-if="isSubmitting">
                   <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Creating account...
+                  {{ t('common.loading') }}
                 </span>
-                <span v-else>Create Account</span>
+                <span v-else>{{ t('auth.registerButton') }}</span>
               </button>
             </form>
 
             <div class="text-center mt-4">
               <p class="mb-0 text-muted">
-                Already have an account? 
-                <a href="/login" class="text-primary fw-semibold">Login here</a>
+                {{ t('auth.alreadyHaveAccount') }}
+                <a href="/login" class="text-primary fw-semibold">{{ t('auth.loginHere') }}</a>
               </p>
             </div>
           </div>
@@ -96,10 +96,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import { useLocale } from '../composables/useLocale'
 import { validateRequired, validateEmail } from '../utils/validation'
 
 const router = useRouter()
 const { register } = useAuth()
+const { t } = useLocale()
 
 const formData = ref({
   name: '',
@@ -116,19 +118,19 @@ const validateForm = (): boolean => {
 
   // Validate name
   if (!validateRequired(formData.value.name)) {
-    errors.value.name = 'Name is required and cannot be empty'
+    errors.value.name = t('validation.required')
   }
 
   // Validate email
   if (!validateRequired(formData.value.email)) {
-    errors.value.email = 'Email is required and cannot be empty'
+    errors.value.email = t('validation.required')
   } else if (!validateEmail(formData.value.email)) {
-    errors.value.email = 'Please enter a valid email address'
+    errors.value.email = t('validation.emailInvalid')
   }
 
   // Validate password
   if (!validateRequired(formData.value.password)) {
-    errors.value.password = 'Password is required and cannot be empty'
+    errors.value.password = t('validation.required')
   }
 
   return Object.keys(errors.value).length === 0

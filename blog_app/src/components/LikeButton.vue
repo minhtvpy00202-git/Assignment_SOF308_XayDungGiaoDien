@@ -7,7 +7,7 @@
   >
     <span v-if="isLiked">❤️</span>
     <span v-else>🤍</span>
-    Like
+    {{ isLiked ? t('post.unlike') : t('post.like') }}
     <span v-if="count > 0" class="badge bg-secondary ms-1">{{ count }}</span>
   </button>
 </template>
@@ -16,6 +16,7 @@
 import { ref, onMounted } from 'vue'
 import { useLikes } from '../composables/useLikes'
 import { useAuth } from '../composables/useAuth'
+import { useLocale } from '../composables/useLocale'
 
 interface Props {
   postId: string
@@ -29,6 +30,7 @@ const emit = defineEmits<{
 
 const { toggleLike, getLikeCount, isLikedByUser } = useLikes()
 const { currentUser } = useAuth()
+const { t } = useLocale()
 
 const isLiked = ref(false)
 const count = ref(0)

@@ -20,6 +20,132 @@
       "receiverId": "user-3",
       "status": "accepted",
       "createdAt": "2025-11-30T15:40:59.140Z"
+    },
+    {
+      "id": "857f",
+      "senderId": "1764549213147-mz67d4ddl",
+      "receiverId": "user-1",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:19.976Z"
+    },
+    {
+      "id": "8ff7",
+      "senderId": "1764549213147-mz67d4ddl",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:20.795Z"
+    },
+    {
+      "id": "4f97",
+      "senderId": "1764549213147-mz67d4ddl",
+      "receiverId": "user-2",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:21.501Z"
+    },
+    {
+      "id": "37a6",
+      "senderId": "1764549213147-mz67d4ddl",
+      "receiverId": "1764548938075-heh03rqc4",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:22.149Z"
+    },
+    {
+      "id": "07ac",
+      "senderId": "1764549213147-mz67d4ddl",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:23.165Z"
+    },
+    {
+      "id": "4131",
+      "senderId": "1764549213147-mz67d4ddl",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:24.580Z"
+    },
+    {
+      "id": "2886",
+      "senderId": "1764548938075-heh03rqc4",
+      "receiverId": "user-1",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:32.088Z"
+    },
+    {
+      "id": "da14",
+      "senderId": "1764548938075-heh03rqc4",
+      "receiverId": "user-2",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:32.841Z"
+    },
+    {
+      "id": "f80a",
+      "senderId": "1764548938075-heh03rqc4",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:33.623Z"
+    },
+    {
+      "id": "6c86",
+      "senderId": "1764548938075-heh03rqc4",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:34.310Z"
+    },
+    {
+      "id": "2bf2",
+      "senderId": "1764548938075-heh03rqc4",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:42:35.061Z"
+    },
+    {
+      "id": "9b59",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "user-1",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:26.371Z"
+    },
+    {
+      "id": "5e47",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "user-2",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:27.093Z"
+    },
+    {
+      "id": "56da",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:27.687Z"
+    },
+    {
+      "id": "0c88",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:28.422Z"
+    },
+    {
+      "id": "9e80",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "user-1",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:45.435Z"
+    },
+    {
+      "id": "f269",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "user-2",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:46.126Z"
+    },
+    {
+      "id": "f18b",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-12-01T00:43:46.781Z"
     }
   ],
   "friendships": [
@@ -40,6 +166,114 @@
       "userId1": "user-1",
       "userId2": "user-3",
       "createdAt": "2025-11-30T15:41:28.510Z"
+    },
+    {
+      "id": "f133",
+      "userId1": "1764549213147-mz67d4ddl",
+      "userId2": "1764548938075-heh03rqc4",
+      "createdAt": "2025-12-01T00:42:31.428Z"
+    },
+    {
+      "id": "0074",
+      "userId1": "1764549213147-mz67d4ddl",
+      "userId2": "1764549165351-qzcp4d0z9",
+      "createdAt": "2025-12-01T00:43:24.852Z"
+    },
+    {
+      "id": "5f1a",
+      "userId1": "1764548938075-heh03rqc4",
+      "userId2": "1764549165351-qzcp4d0z9",
+      "createdAt": "2025-12-01T00:43:25.728Z"
+    },
+    {
+      "id": "5b22",
+      "userId1": "1764549213147-mz67d4ddl",
+      "userId2": "1764549184031-i6y3xt6nb",
+      "createdAt": "2025-12-01T00:43:43.750Z"
+    },
+    {
+      "id": "82a8",
+      "userId1": "1764548938075-heh03rqc4",
+      "userId2": "1764549184031-i6y3xt6nb",
+      "createdAt": "2025-12-01T00:43:44.304Z"
+    },
+    {
+      "id": "e0bc",
+      "userId1": "1764549165351-qzcp4d0z9",
+      "userId2": "1764549184031-i6y3xt6nb",
+      "createdAt": "2025-12-01T00:43:44.824Z"
+    },
+    {
+      "id": "9a42",
+      "userId1": "1764549213147-mz67d4ddl",
+      "userId2": "user-1",
+      "createdAt": "2025-12-01T00:44:45.633Z"
+    },
+    {
+      "id": "571a",
+      "userId1": "1764548938075-heh03rqc4",
+      "userId2": "user-1",
+      "createdAt": "2025-12-01T00:44:46.116Z"
+    },
+    {
+      "id": "21d1",
+      "userId1": "1764549165351-qzcp4d0z9",
+      "userId2": "user-1",
+      "createdAt": "2025-12-01T00:44:46.658Z"
+    },
+    {
+      "id": "c7d4",
+      "userId1": "1764549184031-i6y3xt6nb",
+      "userId2": "user-1",
+      "createdAt": "2025-12-01T00:44:47.166Z"
+    },
+    {
+      "id": "78d9",
+      "userId1": "1764549213147-mz67d4ddl",
+      "userId2": "user-2",
+      "createdAt": "2025-12-01T00:44:59.037Z"
+    },
+    {
+      "id": "e448",
+      "userId1": "1764548938075-heh03rqc4",
+      "userId2": "user-2",
+      "createdAt": "2025-12-01T00:44:59.465Z"
+    },
+    {
+      "id": "84a2",
+      "userId1": "1764549165351-qzcp4d0z9",
+      "userId2": "user-2",
+      "createdAt": "2025-12-01T00:44:59.832Z"
+    },
+    {
+      "id": "f2ca",
+      "userId1": "1764549184031-i6y3xt6nb",
+      "userId2": "user-2",
+      "createdAt": "2025-12-01T00:45:00.641Z"
+    },
+    {
+      "id": "e29a",
+      "userId1": "1764549213147-mz67d4ddl",
+      "userId2": "user-3",
+      "createdAt": "2025-12-01T00:45:36.033Z"
+    },
+    {
+      "id": "6fd9",
+      "userId1": "1764548938075-heh03rqc4",
+      "userId2": "user-3",
+      "createdAt": "2025-12-01T00:45:36.467Z"
+    },
+    {
+      "id": "157e",
+      "userId1": "1764549165351-qzcp4d0z9",
+      "userId2": "user-3",
+      "createdAt": "2025-12-01T00:45:37.008Z"
+    },
+    {
+      "id": "c4ed",
+      "userId1": "1764549184031-i6y3xt6nb",
+      "userId2": "user-3",
+      "createdAt": "2025-12-01T00:45:37.493Z"
     }
   ],
   "users": [
@@ -47,7 +281,7 @@
       "id": "user-1",
       "name": "Nguyễn Văn An",
       "email": "an.nguyen@example.com",
-      "password": "password123",
+      "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=1",
       "intro": "Yêu thích công nghệ và lập trình. Đam mê chia sẻ kiến thức về Vue.js và JavaScript."
     },
@@ -55,7 +289,7 @@
       "id": "user-2",
       "name": "Trần Thị Bình",
       "email": "binh.tran@example.com",
-      "password": "password123",
+      "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=5",
       "intro": "Designer và developer. Thích tạo ra những giao diện đẹp và trải nghiệm người dùng tuyệt vời."
     },
@@ -63,9 +297,41 @@
       "id": "user-3",
       "name": "Lê Minh Cường",
       "email": "cuong.le@example.com",
-      "password": "password123",
+      "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=8",
       "intro": "Full-stack developer với 5 năm kinh nghiệm. Chuyên về Node.js và Vue.js."
+    },
+    {
+      "id": "1764548938075-heh03rqc4",
+      "name": "Trần Văn Minh",
+      "email": "minhtvpy00202@gmail.com",
+      "password": "123456",
+      "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/hinh-anh-avatar-nam-1-600x600.jpg?1704789696645",
+      "intro": ""
+    },
+    {
+      "id": "1764549165351-qzcp4d0z9",
+      "name": "Võ Văn Dũng",
+      "email": "user1@gmail.com",
+      "password": "123456",
+      "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/tong-hop-avatar-facebook-dep-nhat.jpg?1704937487183",
+      "intro": ""
+    },
+    {
+      "id": "1764549184031-i6y3xt6nb",
+      "name": "Nguyễn Hạnh Phúc",
+      "email": "user2@gmail.com",
+      "password": "123456",
+      "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Anh-avatar-hoat-hinh-de-thuong-co-be-doi-mu.jpeg?1704788068824",
+      "intro": ""
+    },
+    {
+      "id": "1764549213147-mz67d4ddl",
+      "name": "Trương Vô Kỵ",
+      "email": "user3@gmail.com",
+      "password": "123456",
+      "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Anh-avatar-hoat-hinh-de-thuong-xinh-xan.jpg?1704788263223",
+      "intro": "Ta chỉ là một kẻ thích sống yên ổn, nhưng số phận cứ đẩy vào phong ba."
     }
   ],
   "posts": [

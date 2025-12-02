@@ -7,7 +7,7 @@
           type="text"
           class="form-control"
           :class="{ 'is-invalid': error }"
-          placeholder="Write a comment..."
+          :placeholder="t('post.writeComment')"
           :disabled="loading"
         />
         <button
@@ -15,7 +15,7 @@
           class="btn btn-primary"
           :disabled="loading || !commentContent.trim()"
         >
-          {{ loading ? 'Posting...' : 'Post' }}
+          {{ loading ? t('common.loading') : t('post.postComment') }}
         </button>
       </div>
       <div v-if="error" class="invalid-feedback d-block">
@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useComments } from '../composables/useComments'
+import { useLocale } from '../composables/useLocale'
 
 interface Props {
   postId: string
@@ -40,6 +41,7 @@ const emit = defineEmits<{
 }>()
 
 const { createComment } = useComments()
+const { t } = useLocale()
 
 const commentContent = ref('')
 const loading = ref(false)
@@ -47,7 +49,7 @@ const error = ref('')
 
 const handleSubmit = async () => {
   if (!commentContent.value.trim()) {
-    error.value = 'Comment content is required'
+    error.value = t('validation.required')
     return
   }
 

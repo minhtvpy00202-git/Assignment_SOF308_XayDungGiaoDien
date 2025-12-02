@@ -4,7 +4,7 @@
     @click="handleShare"
     :disabled="loading"
   >
-    🔄 Share
+    🔄 {{ t('post.share') }}
     <span v-if="count > 0" class="badge bg-secondary ms-1">{{ count }}</span>
   </button>
 </template>
@@ -13,6 +13,7 @@
 import { ref, onMounted } from 'vue'
 import { useShares } from '../composables/useShares'
 import { useAuth } from '../composables/useAuth'
+import { useLocale } from '../composables/useLocale'
 
 interface Props {
   postId: string
@@ -26,6 +27,7 @@ const emit = defineEmits<{
 
 const { sharePost, getShareCount } = useShares()
 const { currentUser } = useAuth()
+const { t } = useLocale()
 
 const count = ref(0)
 const loading = ref(false)

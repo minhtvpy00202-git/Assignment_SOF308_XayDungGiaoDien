@@ -29,13 +29,13 @@
           <!-- Guest links (not authenticated) -->
           <template v-if="!isAuthenticated">
             <li class="nav-item">
-              <router-link to="/" class="nav-link">Home</router-link>
+              <router-link to="/" class="nav-link">{{ t('navbar.home') }}</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/login" class="nav-link">Login</router-link>
+              <router-link to="/login" class="nav-link">{{ t('navbar.login') }}</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/register" class="nav-link">Register</router-link>
+              <router-link to="/register" class="nav-link">{{ t('navbar.register') }}</router-link>
             </li>
           </template>
 
@@ -43,23 +43,70 @@
           <template v-else>
             <li class="nav-item">
               <router-link to="/" class="nav-link px-3">
-                <i class="bi bi-house-door me-1"></i>Home
+                <i class="bi bi-house-door me-1"></i>{{ t('navbar.home') }}
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link to="/posts/create" class="nav-link px-3">
-                <i class="bi bi-plus-circle me-1"></i>Create Post
-              </router-link>
+            
+            <!-- Language Toggle -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle px-3"
+                href="#"
+                id="languageDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-translate me-1"></i>{{ locale === 'vi' ? '🇻🇳' : '🇬🇧' }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                <li>
+                  <button @click="setLocale('en')" class="dropdown-item" :class="{ active: locale === 'en' }">
+                    🇬🇧 {{ t('language.english') }}
+                  </button>
+                </li>
+                <li>
+                  <button @click="setLocale('vi')" class="dropdown-item" :class="{ active: locale === 'vi' }">
+                    🇻🇳 {{ t('language.vietnamese') }}
+                  </button>
+                </li>
+              </ul>
             </li>
-            <li class="nav-item">
-              <router-link to="/profile" class="nav-link px-3">
-                <i class="bi bi-person-circle me-1"></i>Profile
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <button @click="handleLogout" class="btn btn-outline-light btn-sm ms-lg-2 mt-2 mt-lg-0">
-                <i class="bi bi-box-arrow-right me-1"></i>Logout
-              </button>
+            
+            <!-- User Avatar Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle p-0 ms-lg-3"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  :src="currentUser?.avatar || 'https://via.placeholder.com/40'"
+                  :alt="currentUser?.name || 'User'"
+                  class="user-avatar"
+                />
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                  <router-link to="/posts/create" class="dropdown-item">
+                    <i class="bi bi-plus-circle me-2"></i>{{ t('navbar.createPost') }}
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/profile" class="dropdown-item">
+                    <i class="bi bi-person-circle me-2"></i>{{ t('navbar.profile') }}
+                  </router-link>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <button @click="handleLogout" class="dropdown-item">
+                    <i class="bi bi-box-arrow-right me-2"></i>{{ t('navbar.logout') }}
+                  </button>
+                </li>
+              </ul>
             </li>
           </template>
         </ul>
@@ -71,9 +118,11 @@
 <script setup lang="ts">
 import { useAuth } from '../composables/useAuth'
 import { useRouter } from 'vue-router'
+import { useLocale } from '../composables/useLocale'
 
-const { isAuthenticated, logout } = useAuth()
+const { isAuthenticated, currentUser, logout } = useAuth()
 const router = useRouter()
+const { locale, setLocale, t } = useLocale()
 
 const handleLogout = () => {
   logout()
@@ -139,6 +188,57 @@ const handleLogout = () => {
   }
 }
 
+/* User Avatar */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-avatar:hover {
+  border-color: white;
+  transform: scale(1.05);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  min-width: 200px;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.25rem;
+  transition: all 0.2s ease;
+  color: #333;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #667eea;
+  padding-left: 1.5rem;
+}
+
+.dropdown-item.active {
+  background-color: #667eea;
+  color: white;
+}
+
+.dropdown-item i {
+  width: 20px;
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+}
+
 /* Mobile specific */
 @media (max-width: 991px) {
   .navbar-collapse {
@@ -146,6 +246,14 @@ const handleLogout = () => {
     padding: 1rem;
     border-radius: 8px;
     margin-top: 1rem;
+  }
+  
+  .user-avatar {
+    margin: 0.5rem 0;
+  }
+  
+  .dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.95);
   }
 }
 </style>

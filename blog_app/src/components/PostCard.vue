@@ -5,7 +5,7 @@
       <div class="d-flex align-items-center">
         <router-link :to="`/profile/${sharingUser.id}`" class="d-flex align-items-center text-decoration-none">
           <img :src="sharingUser.avatar" :alt="sharingUser.name" class="rounded-circle me-2" width="24" height="24">
-          <small class="text-muted">{{ sharingUser.name }} shared this post</small>
+          <small class="text-muted">{{ sharingUser.name }} {{ t('post.sharedPost') }}</small>
         </router-link>
       </div>
     </div>
@@ -31,15 +31,15 @@
 
       <!-- Interaction stats -->
       <div class="d-flex justify-content-between align-items-center mb-3 text-muted">
-        <small>{{ likeCount }} likes</small>
-        <small>{{ shareCount }} shares</small>
+        <small>{{ likeCount }} {{ t('post.likes') }}</small>
+        <small>{{ shareCount }} {{ t('post.shares') }}</small>
         <small 
           class="comments-toggle" 
           @click="toggleComments"
           style="cursor: pointer; user-select: none;"
           :class="{ 'text-primary': showComments }"
         >
-          {{ commentCount }} comments
+          {{ commentCount }} {{ t('post.comments') }}
         </small>
       </div>
 
@@ -52,10 +52,10 @@
       <!-- Edit/Delete buttons for post owner -->
       <div v-if="isOwner" class="d-flex gap-2">
         <button class="btn btn-sm btn-outline-primary" @click="handleEdit">
-          Edit
+          {{ t('post.edit') }}
         </button>
         <button class="btn btn-sm btn-outline-danger" @click="handleDelete">
-          Delete
+          {{ t('post.delete') }}
         </button>
       </div>
 
@@ -82,6 +82,7 @@
 import { ref, computed, onMounted } from 'vue'
 import type { Post, User } from '../types'
 import { useAuth } from '../composables/useAuth'
+import { useLocale } from '../composables/useLocale'
 import { useLikes } from '../composables/useLikes'
 import { useShares } from '../composables/useShares'
 import { useComments } from '../composables/useComments'
@@ -104,6 +105,7 @@ const emit = defineEmits<{
 }>()
 
 const { currentUser } = useAuth()
+const { t } = useLocale()
 const { getLikeCount } = useLikes()
 const { getShareCount } = useShares()
 const { fetchCommentsByPostId, comments } = useComments()
