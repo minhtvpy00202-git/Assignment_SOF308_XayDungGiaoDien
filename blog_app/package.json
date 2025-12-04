@@ -1,7 +1,7 @@
 {
-  "name": "blog_app",
+  "name": "blog360",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:vite\" \"npm run dev:server\" --names \"VITE,JSON\" --prefix-colors \"cyan,yellow\"",

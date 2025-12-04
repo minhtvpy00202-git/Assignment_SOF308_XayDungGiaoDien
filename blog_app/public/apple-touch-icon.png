@@ -1,0 +1,13 @@
+<!-- This would be a PNG file, but for now we'll create an SVG placeholder -->
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" fill="#1877F2"/>
+  <circle cx="90" cy="90" r="70" fill="white"/>
+  <rect x="60" y="50" width="60" height="80" rx="6" fill="#1877F2"/>
+  <rect x="70" y="62" width="40" height="5" rx="2.5" fill="white"/>
+  <rect x="70" y="73" width="40" height="5" rx="2.5" fill="white"/>
+  <rect x="70" y="84" width="32" height="5" rx="2.5" fill="white"/>
+  <rect x="70" y="95" width="36" height="5" rx="2.5" fill="white"/>
+  <rect x="70" y="106" width="34" height="5" rx="2.5" fill="white"/>
+  <circle cx="115" cy="115" r="22" fill="white"/>
+  <path d="M105 115L115 125L125 115L115 105L105 115Z" fill="#1877F2"/>
+</svg>

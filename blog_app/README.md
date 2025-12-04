@@ -1,16 +1,18 @@
-# Blog Management Application
+# Blog360
 
-A social media blog application built with Vue.js 3, TypeScript, Bootstrap 5, and JSON Server.
+A modern social media blog application built with Vue.js 3, TypeScript, Bootstrap 5, and JSON Server.
 
 ## Features
 
-- User registration and authentication
-- Create, edit, and delete blog posts
-- Like and share posts
-- Comment on posts (inline and dedicated views)
-- Direct messaging between users
-- User profiles with post management
-- Responsive design with Bootstrap 5
+- 🔐 User registration and authentication
+- 📝 Create, edit, and delete blog posts
+- ❤️ Like and share posts
+- 💬 Comment on posts (inline and dedicated views)
+- 📨 Direct messaging between users
+- 👤 User profiles with post management
+- 🌍 Multi-language support (English/Vietnamese)
+- 📱 Responsive design with Bootstrap 5
+- 🎨 Modern UI with #1877F2 theme color
 
 ## Tech Stack
 
@@ -18,6 +20,7 @@ A social media blog application built with Vue.js 3, TypeScript, Bootstrap 5, an
 - **UI Framework**: Bootstrap 5
 - **Routing**: Vue Router 4
 - **HTTP Client**: Axios
+- **i18n**: Vue I18n 9
 - **Backend**: JSON Server
 - **Build Tool**: Vite
 
@@ -50,15 +53,17 @@ This will start the frontend on http://localhost:5173
 ## Project Structure
 
 ```
-blog_app/
+blog360/
 ├── src/
 │   ├── types/          # TypeScript interfaces and types
 │   ├── components/     # Vue components
-│   ├── views/          # Page components
+│   ├── pages/          # Page components
 │   ├── composables/    # Composition API logic
 │   ├── services/       # API service layer
 │   ├── router/         # Vue Router configuration
+│   ├── locales/        # i18n translations (EN/VI)
 │   └── main.ts         # Application entry point
+├── public/             # Static assets
 ├── db.json             # JSON Server database
 └── package.json
 ```

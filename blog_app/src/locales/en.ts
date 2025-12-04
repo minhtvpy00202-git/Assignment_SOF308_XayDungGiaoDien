@@ -1,6 +1,6 @@
 export default {
   navbar: {
-    home: 'Home',
+    home: 'News Feed',
     createPost: 'Create Post',
     profile: 'Profile',
     logout: 'Logout',

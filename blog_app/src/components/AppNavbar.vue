@@ -3,11 +3,24 @@
     <div class="container">
       <!-- Logo/Brand -->
       <router-link to="/" class="navbar-brand d-flex align-items-center">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
-          <rect width="32" height="32" rx="8" fill="white" fill-opacity="0.2"/>
-          <path d="M8 12h16M8 16h16M8 20h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2 brand-logo">
+          <!-- Background circle -->
+          <circle cx="20" cy="20" r="18" fill="white" fill-opacity="0.95"/>
+          
+          <!-- Blog icon - Document -->
+          <rect x="12" y="10" width="16" height="20" rx="2" fill="#1877F2"/>
+          
+          <!-- Text lines -->
+          <rect x="14" y="13" width="12" height="1.5" rx="0.75" fill="white"/>
+          <rect x="14" y="16.5" width="12" height="1.5" rx="0.75" fill="white"/>
+          <rect x="14" y="20" width="9" height="1.5" rx="0.75" fill="white"/>
+          <rect x="14" y="23.5" width="10" height="1.5" rx="0.75" fill="white"/>
+          
+          <!-- Pen icon -->
+          <circle cx="26" cy="26" r="5" fill="white"/>
+          <path d="M24 26L26 28L28 26L26 24L24 26Z" fill="#1877F2"/>
         </svg>
-        <span class="fw-bold">Blog App</span>
+        <span class="fw-bold brand-text">Blog360</span>
       </router-link>
 
       <!-- Mobile toggle button -->
@@ -132,7 +145,7 @@ const handleLogout = () => {
 
 <style scoped>
 .navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: #1877F2 !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 1rem 0;
 }
@@ -144,6 +157,20 @@ const handleLogout = () => {
 
 .navbar-brand:hover {
   transform: scale(1.05);
+}
+
+.brand-logo {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover .brand-logo {
+  transform: rotate(-5deg) scale(1.1);
+}
+
+.brand-text {
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
 }
 
 .nav-link {
@@ -173,7 +200,7 @@ const handleLogout = () => {
 
 .btn-outline-light:hover {
   background-color: white;
-  color: #667eea;
+  color: #1877F2;
   transform: translateY(-1px);
 }
 
@@ -222,12 +249,12 @@ const handleLogout = () => {
 
 .dropdown-item:hover {
   background-color: #f8f9fa;
-  color: #667eea;
+  color: #1877F2;
   padding-left: 1.5rem;
 }
 
 .dropdown-item.active {
-  background-color: #667eea;
+  background-color: #1877F2;
   color: white;
 }
 

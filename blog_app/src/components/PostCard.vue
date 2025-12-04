@@ -24,56 +24,71 @@
 
       <!-- Post content -->
       <h5 class="card-title">{{ displayPost.title }}</h5>
-      <p class="card-text">{{ displayPost.content }}</p>
+      <p class="card-text">
+        <span v-if="!isContentExpanded && displayPost.content.length > 100">
+          {{ displayPost.content.substring(0, 100) }}...
+          <a href="#" @click.prevent="isContentExpanded = true" class="text-primary fw-semibold">Xem thêm</a>
+        </span>
+        <span v-else>{{ displayPost.content }}</span>
+      </p>
+    </div>
 
-      <!-- Post image -->
-      <img v-if="displayPost.image" :src="displayPost.image" class="img-fluid mb-3" :alt="displayPost.title">
+    <!-- Post image (outside card-body for full width) -->
+    <div v-if="displayPost.image" class="post-image-container">
+      <img :src="displayPost.image" class="post-image" :alt="displayPost.title">
+    </div>
+
+    <div class="card-body pt-0">
 
       <!-- Interaction stats -->
       <div class="d-flex justify-content-between align-items-center mb-3 text-muted">
         <small>{{ likeCount }} {{ t('post.likes') }}</small>
-        <small>{{ shareCount }} {{ t('post.shares') }}</small>
-        <small 
-          class="comments-toggle" 
-          @click="toggleComments"
-          style="cursor: pointer; user-select: none;"
-          :class="{ 'text-primary': showComments }"
-        >
-          {{ commentCount }} {{ t('post.comments') }}
-        </small>
+        <div class="d-flex gap-3">
+          <small>{{ shareCount }} {{ t('post.shares') }}</small>
+          <small 
+            class="comments-toggle" 
+            @click="toggleComments"
+            style="cursor: pointer; user-select: none;"
+            :class="{ 'text-primary': showComments }"
+          >
+            {{ commentCount }} {{ t('post.comments') }}
+          </small>
+        </div>
       </div>
 
       <!-- Action buttons -->
-      <div class="d-flex gap-2 mb-3">
-        <LikeButton :postId="post.sharedFromId || post.id" @like-toggled="handleLikeToggled" />
-        <ShareButton :postId="post.sharedFromId || post.id" @share-created="handleShareCreated" />
+      <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+        <div class="d-flex gap-2">
+          <LikeButton :postId="post.sharedFromId || post.id" @like-toggled="handleLikeToggled" />
+          <ShareButton :postId="post.sharedFromId || post.id" @share-created="handleShareCreated" />
+        </div>
+        
+        <!-- Edit/Delete buttons for post owner -->
+        <div v-if="isOwner" class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-primary" @click="handleEdit">
+            {{ t('post.edit') }}
+          </button>
+          <button class="btn btn-sm btn-outline-danger" @click="handleDelete">
+            {{ t('post.delete') }}
+          </button>
+        </div>
       </div>
+    </div>
 
-      <!-- Edit/Delete buttons for post owner -->
-      <div v-if="isOwner" class="d-flex gap-2">
-        <button class="btn btn-sm btn-outline-primary" @click="handleEdit">
-          {{ t('post.edit') }}
-        </button>
-        <button class="btn btn-sm btn-outline-danger" @click="handleDelete">
-          {{ t('post.delete') }}
-        </button>
-      </div>
+    <!-- Inline comments section (only show when toggled) -->
+    <div v-if="showComments" class="card-body pt-0">
+      <CommentList
+        :postId="post.sharedFromId || post.id"
+        :comments="comments"
+        :loading="commentsLoading"
+      />
 
-      <!-- Inline comments section (only show when toggled) -->
-      <div v-if="showComments">
-        <CommentList
-          :postId="post.sharedFromId || post.id"
-          :comments="comments"
-          :loading="commentsLoading"
-        />
-
-        <!-- Comment form (only for authenticated users) -->
-        <CommentForm
-          v-if="currentUser"
-          :postId="post.sharedFromId || post.id"
-          @comment-created="handleCommentCreated"
-        />
-      </div>
+      <!-- Comment form (only for authenticated users) -->
+      <CommentForm
+        v-if="currentUser"
+        :postId="post.sharedFromId || post.id"
+        @comment-created="handleCommentCreated"
+      />
     </div>
   </div>
 </template>
@@ -118,6 +133,7 @@ const originalPost = ref<Post | null>(null)
 const originalAuthor = ref<User | null>(null)
 const commentsLoading = ref(false)
 const showComments = ref(false) // Comments hidden by default
+const isContentExpanded = ref(false) // Content expansion state
 
 // Check if current user is the post owner (or sharing user for shared posts)
 const isOwner = computed(() => {
@@ -221,6 +237,7 @@ onMounted(() => {
 <style scoped>
 .card {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .rounded-circle {
@@ -238,5 +255,35 @@ onMounted(() => {
 .comments-toggle:hover {
   color: #0d6efd !important;
   text-decoration: underline;
+}
+
+/* Post image styling - full width with fixed aspect ratio */
+.post-image-container {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+.post-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Responsive image height */
+@media (max-width: 768px) {
+  .post-image-container {
+    height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .post-image-container {
+    height: 250px;
+  }
 }
 </style>

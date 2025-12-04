@@ -1,0 +1,19 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <circle cx="60" cy="60" r="58" fill="white" stroke="#1877F2" stroke-width="4"/>
+  
+  <!-- Blog document icon -->
+  <rect x="35" y="28" width="50" height="64" rx="6" fill="#1877F2"/>
+  
+  <!-- Text lines on document -->
+  <rect x="43" y="38" width="34" height="4" rx="2" fill="white"/>
+  <rect x="43" y="48" width="34" height="4" rx="2" fill="white"/>
+  <rect x="43" y="58" width="26" height="4" rx="2" fill="white"/>
+  <rect x="43" y="68" width="30" height="4" rx="2" fill="white"/>
+  <rect x="43" y="78" width="28" height="4" rx="2" fill="white"/>
+  
+  <!-- Pen icon overlay -->
+  <circle cx="80" cy="80" r="18" fill="white" stroke="#1877F2" stroke-width="3"/>
+  <path d="M72 80L80 88L88 80L80 72L72 80Z" fill="#1877F2"/>
+  <path d="M76 84L80 88L76 92L72 88L76 84Z" fill="#166FE5"/>
+</svg>

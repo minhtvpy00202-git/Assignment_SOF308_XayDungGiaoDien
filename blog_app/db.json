@@ -280,7 +280,7 @@
     {
       "id": "user-1",
       "name": "Nguyễn Văn An",
-      "email": "an.nguyen@example.com",
+      "email": "u1@gmail.com",
       "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=1",
       "intro": "Yêu thích công nghệ và lập trình. Đam mê chia sẻ kiến thức về Vue.js và JavaScript."
@@ -288,7 +288,7 @@
     {
       "id": "user-2",
       "name": "Trần Thị Bình",
-      "email": "binh.tran@example.com",
+      "email": "u2@gmail.com",
       "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=5",
       "intro": "Designer và developer. Thích tạo ra những giao diện đẹp và trải nghiệm người dùng tuyệt vời."
@@ -296,7 +296,7 @@
     {
       "id": "user-3",
       "name": "Lê Minh Cường",
-      "email": "cuong.le@example.com",
+      "email": "u3@gmail.com",
       "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=8",
       "intro": "Full-stack developer với 5 năm kinh nghiệm. Chuyên về Node.js và Vue.js."
@@ -304,7 +304,7 @@
     {
       "id": "1764548938075-heh03rqc4",
       "name": "Trần Văn Minh",
-      "email": "minhtvpy00202@gmail.com",
+      "email": "u7@gmail.com",
       "password": "123456",
       "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/hinh-anh-avatar-nam-1-600x600.jpg?1704789696645",
       "intro": ""
@@ -312,7 +312,7 @@
     {
       "id": "1764549165351-qzcp4d0z9",
       "name": "Võ Văn Dũng",
-      "email": "user1@gmail.com",
+      "email": "u4@gmail.com",
       "password": "123456",
       "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/tong-hop-avatar-facebook-dep-nhat.jpg?1704937487183",
       "intro": ""
@@ -320,7 +320,7 @@
     {
       "id": "1764549184031-i6y3xt6nb",
       "name": "Nguyễn Hạnh Phúc",
-      "email": "user2@gmail.com",
+      "email": "u5@gmail.com",
       "password": "123456",
       "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Anh-avatar-hoat-hinh-de-thuong-co-be-doi-mu.jpeg?1704788068824",
       "intro": ""
@@ -328,7 +328,7 @@
     {
       "id": "1764549213147-mz67d4ddl",
       "name": "Trương Vô Kỵ",
-      "email": "user3@gmail.com",
+      "email": "u6@gmail.com",
       "password": "123456",
       "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Anh-avatar-hoat-hinh-de-thuong-xinh-xan.jpg?1704788263223",
       "intro": "Ta chỉ là một kẻ thích sống yên ổn, nhưng số phận cứ đẩy vào phong ba."
@@ -376,6 +376,23 @@
       "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
       "sharedFromId": "post-1",
       "createdAt": "2025-11-30T15:25:48.755Z"
+    },
+    {
+      "id": "1764803774578-ooz1bduiw",
+      "title": "8 sự kiện rùm beng cộng đồng blog Việt 2008",
+      "content": "Yahoo 360 đóng cửa một blog nổi tiếng vì đăng ảnh sex, hàng loạt nick bị trộm mật khẩu, sinh viên phải nghỉ học vì nói xấu thầy trên Internet, sao nữ đăng ảnh nude trên web cá nhân...\n\n2008 được coi là năm mở màn cho sự thoái trào blog tại Việt Nam. Các cuộc thi, phong trào không còn thu hút lượng lớn người tham gia trong khi hot blogger mới nổi đa số là nhờ các bài viết giật gân, câu khách. Trình độ spam cũng được nâng lên hàng chuyên nghiệp nhờ các phần mềm auto-comment (tự động phát tán thông điệp) và một số công ty bắt đầu mượn blog để quảng bá dịch vụ, sản phẩm. Năm 2008 kết thúc trong sự xập xệ của Yahoo 360 còn lời hứa về một nền tảng \"mang tính toàn cầu\" vẫn chưa biết bao giờ mới thành hiện thực.\n \nNhững câu chuyện dưới đây không hẳn là \"sự kiện\", nhưng được nhiều người biết đến và thu hút nhiều phản hồi trên các blog.\nĐan Lê và clip sex \"dỏm\"\n\nĐầu năm 2008, \"cô gái thời tiết\" bất ngờ phải hứng chịu scandal từ trên trời rơi xuống khi 3 đoạn phim ngắn quay cảnh \"phòng the\" với nhân vật nữ có khuôn mặt giống cô bị phát tán mạnh trên mạng. Trước nhiều luồng dư luận, cộng đồng blog đã cùng nhau truy tìm nguồn gốc những clip này và đến sáng 26/3, blogger Tắc Kè đã đăng bản đầy đủ với các góc quay cận mặt để chứng tỏ người trong clip không phải Đan Lê - biên tập viên của Đài truyền hình kỹ thuật số VTC.\n\nVụ trộm mật khẩu blog quy mô lớn\n\nNhững cảnh báo của giới bảo mật về lỗi XSS trên Yahoo 360 không được người dùng để tâm cho đến một ngày web cá nhân của nhiều người nổi tiếng như Bảo Thy, Quang Vinh, OnlyU... bị ăn cắp password. Blogger nhận được một e-mail lạ và khi mở thư, trang Yahoo Login tự động hiện ra, yêu cầu họ đăng nhập lại. Nếu làm theo, mật khẩu lập tức rơi vào tay kẻ trộm có nick Kym Ljnk.\n\nBằng giọng hài hước, nhân vật này tuyên bố: \"Em chỉ change pass (đổi mật khẩu) khoảng 100 blog và chắc chắn sẽ trả lại không một mất mát nào\". Đúng lời hứa, vài ngày sau, Kym Ljnk đã reset lại mật khẩu cho nạn nhân. Vụ việc khép lại mà không ai biết Kym Ljnk là ai, nhưng hacker này trở thành \"người hùng\" khi nhắc nhở mọi người về những nguy cơ có thật trên blog.\n\nYahoo đóng cửa một số blog nổi tiếng\n\nNgày 17/6, cư dân mạng xôn xao khi Yahoo \"đóng cửa vĩnh viễn\" blog có lượng truy cập đông nhất Việt Nam OnlyU (200.000 pageview/ngày và đạt kỷ lục gần 1 triệu lượt xem trong vòng 24 giờ hồi tháng 2/2008). Ông Vũ Minh Trí, Tổng giám đốc Yahoo Việt Nam, giải thích họ đã nhận được rất nhiều thông báo rằng OnlyU đăng ảnh, clip có nội dung thiếu lành mạnh.\n\nTrước đó, một blog nổi danh khác là Tắc Kè cũng bị khóa và trên blog mới, blogger này viết: \"Yahoo chỉ nói bạn đã vi phạm và chúng tôi đóng cửa trang của bạn. Chắc entry của Tắc Kè có nhiều ảnh cởi trần mà quên để chế độ Mature Content (Nội dung chỉ dành cho người trên 18 tuổi)\".\n\nBị đình chỉ học vì vô lễ trên blog\n\nBị cấm thi trong học kỳ I do không đóng học phí đúng hạn, Lâm lên blog của mình nói thầy \"cứng nhắc và bảo thủ\" và \"thông báo không đưa ngoài sảnh thì ai thấy được\". Đại học Ngoại Thương (cơ sở 2 - TP HCM) quyết định đình chỉ học một năm đối với sinh viên này vì đưa thông tin sai sự thật trên Internet, xúc phạm nhân thân của một số cán bộ, giáo viên, gây phương hại đến danh dự uy tín nhà trường. Hình thức kỷ luật sẽ được ghi trong bảng kết quả học tập và rèn luyện của Lâm khi ra trường. Lâm giải thích rằng khi biết bị cấm thi, cậu quá lo lắng nên viết blog để tìm sự chia sẻ của bạn bè.\n\nClip nữ sinh đánh nhau\n\nTrong hai đoạn video dài gần 7 phút, một nữ sinh lớp 9 bị bạn túm tóc, đánh đập và hàng chục học sinh khác đứng ngoài hò hét cổ vũ, lấy điện thoại di động ra ghi lại. Clip này lập tức nhận được hàng trăm phản hồi mạnh mẽ từ phía người xem.\n\n\"Đánh hội đồng một cô gái là không thể chấp nhận nhưng thái độ bàng quan của những em khác, đặc biệt là con trai thì không thể tha thứ được\", một blogger bình luận. Đầu tháng 1/2009, một video khác lại khiến người xem phẫn nộ khi một cô bé tuổi teen vì mượn đồ không trả lại đã phải nhận nhiều cú đá trời giáng của các nữ sinh khác.\n\nKhoe ảnh nude trên blog\n\nEntry \"Nào thì nude…\" hồi tháng 10/2008 đăng một số tấm hình nửa kín nửa hở của Hoàng Thùy Dung - thí sinh từng gây ấn tượng tại cuộc thi ca nhạc Sao Mai 2007 - làm nổ tung thế giới Internet với các ý kiến đa chiều, phần lớn mang tính thiếu thiện cảm. Thùy Dung khẳng định cô chỉ chụp chơi chứ không định mượn chúng để lăng xê bản thân.\n\nCuối 2008 - đầu 2009, cộng đồng blog tiếp tục \"đón nhận\" bộ ảnh nude \"Khi con quỷ tỉnh giấc\" và \"Bản năng gốc\" của blogger Sandy Devil - nữ sinh mới học lớp 11. Chưa bàn về mức độ đúng sai, nên hay không nên khi công khai ảnh trên mạng, nhưng những tấm hình này đã trở thành đề tài \"không thể hot hơn\" trên mạng thời gian qua.\n\nThông tư quản lý blog ra đời\n\nBlog hiện nay không chỉ là công cụ giải trí cho người sử dụng Internet mà trở thành nguồn tin tham khảo song song với kênh thông tin chính thức là báo chí. Trước tác động xã hội lớn của blog, ngày 23/12, Bộ Thông tin và Truyền thông đã ra Thông tư về quản lý blog nhằm định hướng, tuyên truyền để người dùng biết cái gì được khuyến khích, cái gì nên tránh...\n\n\"Quy chế quản lý blog là cần thiết, nhưng cần xuất phát từ nhu cầu của blogger và tận dụng sức mạnh của chính cộng đồng này, như xây dựng hệ thống tố cáo trang web xấu giống 'Report abuse' của Yahoo 360\", một blogger nhận định.\n\nYahoo 360 chưa vào \"viện bảo tàng\"\n\nViệc Yahoo 360 hiện vẫn là mạng xã hội phổ biến nhất Việt Nam có lẽ là điều đáng kinh ngạc nhất trong làng blog năm qua vì tập đoàn Internet Mỹ đã tuyên bố ngừng hỗ trợ nền tảng này từ... cuối 2007. Sự ra đời của dịch vụ dành riêng cho người Việt 360plus, chiến dịch hỗ trợ chuyển toàn bộ nội dung sang hệ thống mới của Cyworld, Yobanbe... và cảm giác \"đau tim\" mỗi lần viết blog trên 360 do có thể bị mất bài, mất comment cũng không thay đổi được thói quen sử dụng Yahoo của người Việt. Dù luôn trong tình trạng \"vừa dùng vừa tức\", đa số đều tỏ ra buồn trước thông tin Yahoo 360 chuẩn bị đóng cửa. Họ miễn cưỡng chuyển nhà sang các dịch vụ khác rồi lại \"vật vã trở về\" khi biết đó chỉ là tin đồn mà không biết tình trạng này sẽ còn kéo dài trong bao lâu nữa.\nTheo VnExpress\nnguyenquyen",
+      "image": "http://giadinh.mediacdn.vn/Images/Uploaded/Share/2009/01/20090124062026433/blog1.jpg",
+      "userId": "1764548938075-heh03rqc4",
+      "createdAt": "2025-12-03T23:16:14.578Z"
+    },
+    {
+      "id": "1764804907284-helenteeh",
+      "userId": "1764548938075-heh03rqc4",
+      "title": "Best Practices cho RESTful API",
+      "content": "Khi xây dựng API, việc tuân thủ các best practices là rất quan trọng. Điều này giúp API dễ sử dụng, dễ bảo trì và mở rộng. Trong bài này, tôi sẽ chia sẻ những kinh nghiệm của mình về RESTful API design.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
+      "sharedFromId": "post-3",
+      "createdAt": "2025-12-03T23:35:07.284Z"
     }
   ],
   "comments": [
@@ -462,6 +479,12 @@
       "postId": "post-1",
       "userId": "user-2",
       "createdAt": "2025-11-30T15:25:48.764Z"
+    },
+    {
+      "id": "1764804907297-uyb3fb8rc",
+      "postId": "post-3",
+      "userId": "1764548938075-heh03rqc4",
+      "createdAt": "2025-12-03T23:35:07.297Z"
     }
   ],
   "messages": [

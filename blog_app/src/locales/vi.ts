@@ -1,8 +1,8 @@
 export default {
   navbar: {
-    home: 'Trang chủ',
+    home: 'News Feed',
     createPost: 'Tạo bài viết',
-    profile: 'Hồ sơ',
+    profile: 'Trang cá nhân',
     logout: 'Đăng xuất',
     login: 'Đăng nhập',
     register: 'Đăng ký'
