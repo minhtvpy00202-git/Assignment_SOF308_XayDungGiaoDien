@@ -62,7 +62,8 @@ export default {
     noFriends: 'No friends yet. Add friends to start messaging!',
     typeMessage: 'Type a message...',
     send: 'Send',
-    selectConversation: 'Select a conversation to start'
+    selectConversation: 'Select a conversation to start',
+    active: 'Active now'
   },
   suggestions: {
     suggestions: 'Friend Suggestions',

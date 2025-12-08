@@ -70,16 +70,17 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 import { useMessages } from '../composables/useMessages'
 import { useFriends } from '../composables/useFriends'
+import { useChatPopups } from '../composables/useChatPopups'
+import { apiService } from '../services/apiService'
 import type { Conversation } from '../types'
 
-const router = useRouter()
 const { currentUser } = useAuth()
 const { conversations, loading: messagesLoading, fetchConversations } = useMessages()
 const { friends, loading: friendsLoading, fetchFriends } = useFriends()
+const { openChatPopup } = useChatPopups()
 
 let refreshInterval: number | null = null
 
@@ -128,9 +129,28 @@ const formatTime = (timestamp: string) => {
   }
 }
 
-// Handle conversation click - navigate to messages page
-const handleConversationClick = (userId: string) => {
-  router.push(`/messages/${userId}`)
+// Handle conversation click - open chat popup
+const handleConversationClick = async (userId: string) => {
+  try {
+    // Fetch user details
+    const user = await apiService.getUserById(userId)
+    
+    // Fetch messages
+    const messages = await apiService.getMessagesBetweenUsers(
+      currentUser.value!.id,
+      userId
+    )
+    
+    // Sort messages
+    const sortedMessages = messages.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    )
+    
+    // Open chat popup
+    openChatPopup(user, userId, sortedMessages)
+  } catch (error) {
+    console.error('Failed to open chat:', error)
+  }
 }
 
 // Load conversations and friends

@@ -60,6 +60,12 @@
               </router-link>
             </li>
             
+            <li class="nav-item">
+              <router-link to="/messages" class="nav-link px-3">
+                <i class="bi bi-chat-dots me-1"></i>{{ t('messages.messages') }}
+              </router-link>
+            </li>
+            
             <!-- Language Toggle -->
             <li class="nav-item dropdown">
               <a
@@ -70,7 +76,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="bi bi-translate me-1"></i>{{ locale === 'vi' ? '🇻🇳' : '🇬🇧' }}
+                <i class="bi bi-translate me-1"></i>{{ locale === 'vi' ? '🇻🇳' : 'GB' }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
                 <li>

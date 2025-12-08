@@ -62,7 +62,8 @@ export default {
     noFriends: 'Chưa có bạn bè. Thêm bạn để bắt đầu nhắn tin!',
     typeMessage: 'Nhập tin nhắn...',
     send: 'Gửi',
-    selectConversation: 'Chọn một cuộc trò chuyện để bắt đầu'
+    selectConversation: 'Chọn một cuộc trò chuyện để bắt đầu',
+    active: 'Đang hoạt động'
   },
   suggestions: {
     suggestions: 'Gợi ý kết bạn',

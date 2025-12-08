@@ -46,9 +46,9 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/messages/:userId',
+    path: '/messages',
     name: 'Messages',
-    component: () => import('../pages/MessagesPage.vue'),
+    component: () => import('../pages/ConversationsPage.vue'),
     meta: { requiresAuth: true }
   }
 ]
