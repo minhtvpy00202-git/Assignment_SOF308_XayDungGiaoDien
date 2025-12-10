@@ -71,15 +71,19 @@ export function useContentTranslation() {
         locale.value
       )
 
+      // Ensure we have valid strings (fallback to original if translation fails)
+      const finalTitle = translatedTitle || post.title
+      const finalContent = translatedContent || post.content
+
       // Only mark as translated if the content actually changed
-      const titleChanged = translatedTitle !== post.title
-      const contentChanged = translatedContent !== post.content
+      const titleChanged = finalTitle !== post.title
+      const contentChanged = finalContent !== post.content
 
       if (titleChanged || contentChanged) {
-        translatedPost.translatedTitle = translatedTitle
-        translatedPost.translatedContent = translatedContent
-        translatedPost.title = translatedTitle
-        translatedPost.content = translatedContent
+        translatedPost.translatedTitle = finalTitle
+        translatedPost.translatedContent = finalContent
+        translatedPost.title = finalTitle
+        translatedPost.content = finalContent
         translatedPost.isTranslated = true
       }
 
