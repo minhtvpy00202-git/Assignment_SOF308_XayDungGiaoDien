@@ -22,12 +22,37 @@
         </router-link>
       </div>
 
+      <!-- Translation controls -->
+      <div v-if="translationEnabled && (translatedPost || isTranslating)" class="mb-2">
+        <div class="d-flex align-items-center gap-2">
+          <div v-if="isTranslating" class="d-flex align-items-center text-muted">
+            <div class="spinner-border spinner-border-sm me-2" role="status">
+              <span class="visually-hidden">{{ t('common.loading') }}</span>
+            </div>
+            <small>{{ t('translation.translating') }}</small>
+          </div>
+          <div v-else-if="translatedPost" class="d-flex align-items-center gap-2">
+            <small class="text-muted">
+              <i class="bi bi-translate me-1"></i>
+              {{ showOriginal ? t('translation.showingOriginal') : t('translation.translated') }}
+            </small>
+            <button 
+              @click="toggleOriginal"
+              class="btn btn-sm btn-outline-secondary"
+              style="font-size: 0.75rem; padding: 0.125rem 0.5rem;"
+            >
+              {{ showOriginal ? t('translation.showTranslated') : t('translation.showOriginal') }}
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Post content -->
       <h5 class="card-title">{{ displayPost.title }}</h5>
       <p class="card-text">
         <span v-if="!isContentExpanded && displayPost.content.length > 100">
           {{ displayPost.content.substring(0, 100) }}...
-          <a href="#" @click.prevent="isContentExpanded = true" class="text-primary fw-semibold">Xem thêm</a>
+          <a href="#" @click.prevent="isContentExpanded = true" class="text-primary fw-semibold">{{ t('post.readMore') }}</a>
         </span>
         <span v-else>{{ displayPost.content }}</span>
       </p>
@@ -94,10 +119,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import type { Post, User } from '../types'
 import { useAuth } from '../composables/useAuth'
 import { useLocale } from '../composables/useLocale'
+import { useContentTranslation } from '../composables/useContentTranslation'
 import { useLikes } from '../composables/useLikes'
 import { useShares } from '../composables/useShares'
 import { useComments } from '../composables/useComments'
@@ -120,7 +146,8 @@ const emit = defineEmits<{
 }>()
 
 const { currentUser } = useAuth()
-const { t } = useLocale()
+const { t, locale } = useLocale()
+const { translatePost, translationEnabled, isTranslating } = useContentTranslation()
 const { getLikeCount } = useLikes()
 const { getShareCount } = useShares()
 const { fetchCommentsByPostId, comments } = useComments()
@@ -134,6 +161,8 @@ const originalAuthor = ref<User | null>(null)
 const commentsLoading = ref(false)
 const showComments = ref(false) // Comments hidden by default
 const isContentExpanded = ref(false) // Content expansion state
+const translatedPost = ref<Post | null>(null)
+const showOriginal = ref(false)
 
 // Check if current user is the post owner (or sharing user for shared posts)
 const isOwner = computed(() => {
@@ -145,9 +174,15 @@ const displayAuthor = computed(() => {
   return originalAuthor.value || props.author
 })
 
-// Get the display post (original post for shared posts, otherwise the current post)
+// Get the display post (translated, original, or shared post)
 const displayPost = computed(() => {
-  return originalPost.value || props.post
+  const basePost = originalPost.value || props.post
+  
+  if (!translationEnabled.value || showOriginal.value) {
+    return basePost
+  }
+  
+  return translatedPost.value || basePost
 })
 
 // Format the creation date
@@ -228,9 +263,54 @@ const handleDelete = () => {
   emit('delete', props.post.id)
 }
 
+// Toggle between original and translated content
+const toggleOriginal = () => {
+  showOriginal.value = !showOriginal.value
+}
+
+// Translate post content
+const translatePostContent = async () => {
+  if (!translationEnabled.value || isTranslating.value) return
+  
+  const postToTranslate = originalPost.value || props.post
+  
+  try {
+    const result = await translatePost(postToTranslate)
+    if (result.isTranslated) {
+      translatedPost.value = result
+      showOriginal.value = false
+    }
+  } catch (error) {
+    console.error('Error translating post:', error)
+  }
+}
+
+// Watch for locale changes to re-translate
+watch(locale, () => {
+  if (translationEnabled.value && translatedPost.value) {
+    translatedPost.value = null
+    showOriginal.value = false
+    translatePostContent()
+  }
+})
+
+// Watch for translation enabled changes
+watch(translationEnabled, (enabled) => {
+  if (enabled && !translatedPost.value) {
+    translatePostContent()
+  } else if (!enabled) {
+    showOriginal.value = false
+  }
+})
+
 onMounted(() => {
   loadCounts()
   loadSharingUser()
+  
+  // Auto-translate if translation is enabled
+  if (translationEnabled.value) {
+    translatePostContent()
+  }
 })
 </script>
 

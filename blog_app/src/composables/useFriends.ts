@@ -112,6 +112,18 @@ export function useFriends() {
     }
   }
 
+  const getMutualFriendsCount = (userId1: string, userId2: string): number => {
+    try {
+      // This is a simplified implementation that returns 0 for now
+      // In a real implementation, this would calculate mutual friends
+      // by comparing the friends lists of both users
+      return 0
+    } catch (err) {
+      console.error('Error calculating mutual friends:', err)
+      return 0
+    }
+  }
+
   return {
     friends,
     suggestedUsers,
@@ -124,6 +136,7 @@ export function useFriends() {
     sendFriendRequest,
     acceptFriendRequest,
     rejectFriendRequest,
-    areFriends
+    areFriends,
+    getMutualFriendsCount
   }
 }

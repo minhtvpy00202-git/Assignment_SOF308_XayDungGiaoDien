@@ -50,6 +50,12 @@ const routes = [
     name: 'Messages',
     component: () => import('../pages/ConversationsPage.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/post/:id',
+    name: 'PostDetail',
+    component: () => import('../pages/PostDetailPage.vue'),
+    meta: { requiresAuth: false }
   }
 ]
 

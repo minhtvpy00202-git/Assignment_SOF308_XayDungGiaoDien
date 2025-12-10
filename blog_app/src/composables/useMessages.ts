@@ -2,6 +2,7 @@ import { ref, readonly, type Ref } from 'vue'
 import type { Message, CreateMessageData, Conversation } from '../types'
 import { apiService } from '../services/apiService'
 import { useAuth } from './useAuth'
+import { messageEventBus, MESSAGE_EVENTS } from '../utils/messageEvents'
 
 const conversations: Ref<Conversation[]> = ref([])
 const currentConversation: Ref<Message[]> = ref([])
@@ -108,7 +109,7 @@ export function useMessages() {
     }
   }
 
-  const sendMessage = async (receiverId: string, content: string): Promise<void> => {
+  const sendMessage = async (receiverId: string, content: string): Promise<Message> => {
     // Validate empty message
     if (!content || !content.trim()) {
       throw new Error('Message content cannot be empty')
@@ -148,6 +149,14 @@ export function useMessages() {
 
       // Refresh conversations to update the list
       await fetchConversations()
+      
+      // Emit event for instant notification
+      messageEventBus.emit(MESSAGE_EVENTS.NEW_MESSAGE_SENT, {
+        message: newMessage,
+        receiverId
+      })
+      
+      return newMessage
     } catch (error) {
       console.error('Failed to send message:', error)
       throw error

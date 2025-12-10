@@ -48,11 +48,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import type { Message, User } from '../types'
 import { useAuth } from '../composables/useAuth'
 import { useLocale } from '../composables/useLocale'
 import { useMessages } from '../composables/useMessages'
+import { useChatPopups } from '../composables/useChatPopups'
+import { apiService } from '../services/apiService'
+import { messageEventBus, MESSAGE_EVENTS } from '../utils/messageEvents'
 
 interface Props {
   otherUser: User | null
@@ -70,11 +73,13 @@ const emit = defineEmits<{
 const { currentUser } = useAuth()
 const { t } = useLocale()
 const { sendMessage: sendMsg } = useMessages()
+const { updateChatPopupMessages } = useChatPopups()
 
 const isOpen = ref(true)
 const newMessage = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
 const messages = ref<Message[]>(props.initialMessages)
+let refreshInterval: number | null = null
 
 // Watch for new messages from parent
 watch(() => props.initialMessages, (newMessages) => {
@@ -90,13 +95,46 @@ const scrollToBottom = () => {
   })
 }
 
+// Refresh messages from server
+const refreshMessages = async () => {
+  if (!currentUser.value || !props.otherUser) return
+
+  try {
+    const latestMessages = await apiService.getMessagesBetweenUsers(
+      currentUser.value.id,
+      props.otherUser.id
+    )
+    
+    const sortedMessages = latestMessages.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    )
+    
+    // Only update if there are new messages
+    if (sortedMessages.length !== messages.value.length) {
+      messages.value = sortedMessages
+      updateChatPopupMessages(props.otherUser.id, sortedMessages)
+      scrollToBottom()
+    }
+  } catch (error) {
+    console.error('Failed to refresh messages:', error)
+  }
+}
+
 const sendMessage = async () => {
   if (!newMessage.value.trim() || !currentUser.value || !props.otherUser) return
 
   try {
-    await sendMsg(props.otherUser.id, newMessage.value.trim())
+    const newMsg = await sendMsg(props.otherUser.id, newMessage.value.trim())
+    
+    // Add the new message immediately to the local state
+    messages.value.push(newMsg)
+    updateChatPopupMessages(props.otherUser.id, messages.value)
+    
     newMessage.value = ''
     scrollToBottom()
+    
+    // Refresh to make sure we have the latest
+    setTimeout(refreshMessages, 500)
   } catch (error) {
     console.error('Failed to send message:', error)
   }
@@ -110,8 +148,39 @@ const close = () => {
   emit('close')
 }
 
-// Scroll to bottom on mount
-scrollToBottom()
+// Start auto-refresh for messages
+const startAutoRefresh = () => {
+  refreshInterval = window.setInterval(refreshMessages, 1000) // Every 1 second for faster sync
+}
+
+// Stop auto-refresh
+const stopAutoRefresh = () => {
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+    refreshInterval = null
+  }
+}
+
+// Handle instant message updates
+const handleMessageSent = (data: { message: any, receiverId: string }) => {
+  // If message involves this conversation, refresh immediately
+  if (data.receiverId === props.otherUser?.id || data.message.senderId === props.otherUser?.id) {
+    setTimeout(refreshMessages, 50) // Very small delay
+  }
+}
+
+onMounted(() => {
+  scrollToBottom()
+  startAutoRefresh()
+  // Listen for instant message events
+  messageEventBus.on(MESSAGE_EVENTS.NEW_MESSAGE_SENT, handleMessageSent)
+})
+
+onUnmounted(() => {
+  stopAutoRefresh()
+  // Remove event listener
+  messageEventBus.off(MESSAGE_EVENTS.NEW_MESSAGE_SENT, handleMessageSent)
+})
 </script>
 
 <style scoped>

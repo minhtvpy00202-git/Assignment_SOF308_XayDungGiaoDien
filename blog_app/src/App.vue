@@ -5,6 +5,8 @@ import { useChatPopups } from './composables/useChatPopups'
 import AppNavbar from './components/AppNavbar.vue'
 import ChatPopup from './components/ChatPopup.vue'
 import MessageNotificationListener from './components/MessageNotificationListener.vue'
+import TranslationBanner from './components/TranslationBanner.vue'
+import TranslationTooltip from './components/TranslationTooltip.vue'
 
 const { checkAuth } = useAuth()
 const { chatPopups, closeChatPopup, minimizeChatPopup } = useChatPopups()
@@ -18,6 +20,13 @@ onMounted(() => {
 <template>
   <div id="app">
     <AppNavbar />
+    
+    <!-- Translation Feature Banner -->
+    <TranslationBanner />
+    
+    <!-- Translation Tooltip -->
+    <TranslationTooltip />
+    
     <router-view />
     
     <!-- Message Notification Listener -->
@@ -27,7 +36,7 @@ onMounted(() => {
     <div class="chat-popups-container">
       <ChatPopup
         v-for="(popup, index) in chatPopups.filter(p => !p.isMinimized)"
-        :key="popup.id"
+        :key="`${popup.id}-${popup.messages.length}`"
         :other-user="popup.otherUser"
         :conversation-id="popup.conversationId"
         :initial-messages="popup.messages"

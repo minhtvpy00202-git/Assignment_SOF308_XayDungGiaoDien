@@ -42,7 +42,14 @@ export default {
     noPostsYet: 'No posts yet',
     writeComment: 'Write a comment...',
     postComment: 'Post',
-    sharedPost: 'shared this post'
+    sharedPost: 'shared this post',
+    notFound: 'Post not found',
+    notFoundDescription: 'This post may have been deleted or does not exist.',
+    invalidId: 'Invalid post ID',
+    loadError: 'Unable to load post',
+    deleteError: 'Unable to delete post',
+    confirmDelete: 'Are you sure you want to delete this post?',
+    readMore: 'Read more'
   },
   profile: {
     profile: 'Profile',
@@ -67,7 +74,8 @@ export default {
   },
   suggestions: {
     suggestions: 'Friend Suggestions',
-    addFriend: 'Add Friend'
+    addFriend: 'Add Friend',
+    noSuggestions: 'No suggestions available'
   },
   common: {
     loading: 'Loading...',
@@ -83,7 +91,10 @@ export default {
     back: 'Back',
     next: 'Next',
     previous: 'Previous',
-    submit: 'Submit'
+    submit: 'Submit',
+    unknownUser: 'Unknown user',
+    backToHome: 'Back to Home',
+    dismiss: 'Dismiss'
   },
   validation: {
     required: 'This field is required',
@@ -97,6 +108,55 @@ export default {
   language: {
     english: 'English',
     vietnamese: 'Tiếng Việt',
+    changeLanguage: 'Change Language'
+  },
+  search: {
+    placeholder: 'Search Blog360',
+    clear: 'Clear search',
+    noResults: 'No results found for "{query}"',
+    noResultsSuggestion: 'Try different keywords or check your spelling',
+    users: 'People',
+    posts: 'Posts',
+    seeAll: 'See all results',
+    seeAllResults: 'See all results for "{query}"',
+    recent: 'Recent searches',
+    clearRecent: 'Clear recent searches',
+    clearAll: 'Clear all',
+    removeRecent: 'Remove "{query}" from recent searches',
+    resultsLabel: 'Search results',
+    loading: 'Loading...',
+    searching: 'Searching...',
+    mutualFriend: '{count} mutual friend',
+    mutualFriends: '{count} mutual friends',
+    unknownAuthor: 'Unknown author'
+  },
+  time: {
+    justNow: 'Just now',
+    minutesAgo: '{minutes} minutes ago',
+    hourAgo: '1 hour ago',
+    hoursAgo: '{hours} hours ago',
+    dayAgo: '1 day ago',
+    daysAgo: '{days} days ago'
+  },
+  friends: {
+    friendRequests: 'Friend Requests',
+    accept: 'Accept',
+    reject: 'Reject'
+  },
+  translation: {
+    translating: 'Translating...',
+    translated: 'Translated',
+    showingOriginal: 'Showing original',
+    showOriginal: 'Show original',
+    showTranslated: 'Show translated',
+    autoTranslate: 'Auto translate',
+    enableTranslation: 'Enable translation',
+    disableTranslation: 'Disable translation',
+    newFeature: 'New Feature!',
+    bannerMessage: 'You can now automatically translate posts to your preferred language.',
+    tryNow: 'Try Now',
+    tipTitle: 'Pro Tip!',
+    tipMessage: 'You can change the language to automatically translate all posts.',
     changeLanguage: 'Change Language'
   }
 }

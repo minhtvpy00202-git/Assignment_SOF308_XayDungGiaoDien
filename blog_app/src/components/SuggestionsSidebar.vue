@@ -3,7 +3,7 @@
     <!-- Friend Requests Section -->
     <div v-if="friendRequests.length > 0" class="card mb-3">
       <div class="card-header bg-white">
-        <h6 class="mb-0">Friend Requests</h6>
+        <h6 class="mb-0">{{ t('friends.friendRequests') }}</h6>
       </div>
       <div class="list-group list-group-flush">
         <div
@@ -32,14 +32,14 @@
               @click="handleAcceptRequest(request)"
               :disabled="loading"
             >
-              Accept
+              {{ t('friends.accept') }}
             </button>
             <button
               class="btn btn-sm btn-outline-secondary flex-grow-1"
               @click="handleRejectRequest(request.id)"
               :disabled="loading"
             >
-              Reject
+              {{ t('friends.reject') }}
             </button>
           </div>
         </div>
@@ -49,19 +49,19 @@
     <!-- Suggestions Section -->
     <div class="card">
       <div class="card-header bg-white">
-        <h6 class="mb-0">Suggestions</h6>
+        <h6 class="mb-0">{{ t('suggestions.suggestions') }}</h6>
       </div>
       
       <!-- Loading state -->
       <div v-if="loading && suggestedUsers.length === 0" class="card-body text-center py-4">
         <div class="spinner-border spinner-border-sm text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span class="visually-hidden">{{ t('common.loading') }}</span>
         </div>
       </div>
       
       <!-- Empty state -->
       <div v-else-if="suggestedUsers.length === 0" class="card-body text-center py-4">
-        <p class="text-muted small mb-0">No suggestions available</p>
+        <p class="text-muted small mb-0">{{ t('suggestions.noSuggestions') }}</p>
       </div>
       
       <!-- Suggestions list -->
@@ -92,7 +92,7 @@
             @click="handleSendRequest(user.id)"
             :disabled="loading"
           >
-            Add Friend
+            {{ t('suggestions.addFriend') }}
           </button>
         </div>
       </div>
@@ -101,13 +101,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuth } from '../composables/useAuth'
 import { useFriends } from '../composables/useFriends'
+import { useLocale } from '../composables/useLocale'
 import { apiService } from '../services/apiService'
 import type { FriendRequest, User } from '../types'
 
 const { currentUser } = useAuth()
+const { t } = useLocale()
 const {
   suggestedUsers,
   friendRequests,

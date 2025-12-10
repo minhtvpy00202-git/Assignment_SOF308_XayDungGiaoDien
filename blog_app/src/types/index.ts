@@ -141,3 +141,50 @@ export interface AuthStorage {
   token: string
   user: User
 }
+
+// Search Models
+export interface SearchResult {
+  id: string
+  type: 'user' | 'post'
+  title: string
+  subtitle?: string
+  avatar?: string
+  url: string
+  matchedText?: string
+}
+
+export interface SearchResults {
+  users: SearchResult[]
+  posts: SearchResult[]
+  total: number
+}
+
+export interface SearchableUser {
+  id: string
+  name: string
+  email: string
+  avatar: string
+  searchableText: string // normalized name for searching
+}
+
+export interface SearchablePost {
+  id: string
+  title: string
+  content: string
+  userId: string
+  authorName: string
+  createdAt: string
+  searchableText: string // title + content normalized
+}
+
+export interface SearchIndex {
+  users: SearchableUser[]
+  posts: SearchablePost[]
+  lastUpdated: number
+}
+
+export interface RecentSearch {
+  query: string
+  timestamp: number
+  userId?: string
+}

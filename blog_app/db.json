@@ -146,6 +146,55 @@
       "receiverId": "user-3",
       "status": "accepted",
       "createdAt": "2025-12-01T00:43:46.781Z"
+    },
+    {
+      "id": "bafe",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "user-1",
+      "status": "pending",
+      "createdAt": "2025-12-10T02:39:58.971Z"
+    },
+    {
+      "id": "3c04",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "user-2",
+      "status": "accepted",
+      "createdAt": "2025-12-10T02:40:00.349Z"
+    },
+    {
+      "id": "6e74",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "user-3",
+      "status": "accepted",
+      "createdAt": "2025-12-10T02:40:01.031Z"
+    },
+    {
+      "id": "09cf",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "1764548938075-heh03rqc4",
+      "status": "pending",
+      "createdAt": "2025-12-10T02:40:01.194Z"
+    },
+    {
+      "id": "c5ec",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "status": "pending",
+      "createdAt": "2025-12-10T02:40:01.356Z"
+    },
+    {
+      "id": "69bd",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "status": "pending",
+      "createdAt": "2025-12-10T02:40:01.524Z"
+    },
+    {
+      "id": "d22d",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "1764549213147-mz67d4ddl",
+      "status": "pending",
+      "createdAt": "2025-12-10T02:40:01.665Z"
     }
   ],
   "friendships": [
@@ -274,12 +323,24 @@
       "userId1": "1764549184031-i6y3xt6nb",
       "userId2": "user-3",
       "createdAt": "2025-12-01T00:45:37.493Z"
+    },
+    {
+      "id": "04d2",
+      "userId1": "1765334379655-apweiozoz",
+      "userId2": "user-2",
+      "createdAt": "2025-12-10T02:40:22.134Z"
+    },
+    {
+      "id": "8ed2",
+      "userId1": "1765334379655-apweiozoz",
+      "userId2": "user-3",
+      "createdAt": "2025-12-10T02:51:13.711Z"
     }
   ],
   "users": [
     {
       "id": "user-1",
-      "name": "Nguyễn Văn An",
+      "name": "Nguyễn Văn Nam",
       "email": "u1@gmail.com",
       "password": "123456",
       "avatar": "https://i.pravatar.cc/150?img=1",
@@ -332,6 +393,14 @@
       "password": "123456",
       "avatar": "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Anh-avatar-hoat-hinh-de-thuong-xinh-xan.jpg?1704788263223",
       "intro": "Ta chỉ là một kẻ thích sống yên ổn, nhưng số phận cứ đẩy vào phong ba."
+    },
+    {
+      "id": "1765334379655-apweiozoz",
+      "name": "ABC",
+      "email": "u8@gmail.com",
+      "password": "123456",
+      "avatar": "https://via.placeholder.com/150",
+      "intro": ""
     }
   ],
   "posts": [
@@ -393,6 +462,47 @@
       "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
       "sharedFromId": "post-3",
       "createdAt": "2025-12-03T23:35:07.284Z"
+    },
+    {
+      "id": "1765334209426-5qf6zyiqy",
+      "title": "Video bóng đá Inter Milan - Liverpool: Bước ngoặt penalty, thắng lợi quan trọng (Cúp C1)",
+      "content": "Liverpool đã có sự thay đổi đáng kể khi Curtis Jones xuất hiện trên hàng tiền vệ quen thuộc, qua đó Arne Slot quyết định dùng 4 tiền vệ và thay đổi sơ đồ 3 tiền đạo sang dùng cặp Isak - Ekitike trên hàng công. Chính Jones tạo ra cơ hội đầu tiên, phút 18 anh đã lách xuống trung lộ Inter và sút xa buộc Sommer phải cản phá, và thủ môn tuyển Thụy Sĩ sau đó cũng phải đẩy nốt cú đá ngoài vòng cấm của Gravenberch.",
+      "image": "https://cdn.24h.com.vn/upload/4-2025/images/2025-12-10/gettyimages-2250317101-612x612-1765312985-613-width612height408.jpg",
+      "userId": "user-1",
+      "createdAt": "2025-12-10T02:36:49.426Z"
+    },
+    {
+      "id": "1765334246087-8kdeljwpg",
+      "userId": "user-1",
+      "title": "Best Practices cho RESTful API",
+      "content": "Khi xây dựng API, việc tuân thủ các best practices là rất quan trọng. Điều này giúp API dễ sử dụng, dễ bảo trì và mở rộng. Trong bài này, tôi sẽ chia sẻ những kinh nghiệm của mình về RESTful API design.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
+      "sharedFromId": "post-3",
+      "createdAt": "2025-12-10T02:37:26.087Z"
+    },
+    {
+      "id": "english-post-1",
+      "userId": "user-2",
+      "title": "The Future of Artificial Intelligence in Web Development",
+      "content": "Artificial Intelligence is revolutionizing the way we build web applications. From automated code generation to intelligent user interfaces, AI is becoming an integral part of modern web development. In this post, I'll explore how AI tools like GitHub Copilot, ChatGPT, and automated testing frameworks are changing the landscape of web development. We'll also discuss the potential challenges and opportunities that lie ahead as AI continues to evolve.",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
+      "createdAt": "2025-12-10T03:00:00.000Z"
+    },
+    {
+      "id": "english-post-2",
+      "userId": "user-3",
+      "title": "Building Scalable Microservices with Node.js",
+      "content": "Microservices architecture has become the go-to solution for building large-scale applications. In this comprehensive guide, we'll explore how to design, implement, and deploy microservices using Node.js. We'll cover essential topics including service discovery, API gateways, database per service pattern, and inter-service communication. By the end of this article, you'll have a solid understanding of how to build robust and scalable microservices that can handle millions of requests.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
+      "createdAt": "2025-12-10T02:45:00.000Z"
+    },
+    {
+      "id": "english-post-3",
+      "userId": "user-1",
+      "title": "Modern CSS Techniques for Responsive Design",
+      "content": "CSS has evolved tremendously over the past few years. With new features like CSS Grid, Flexbox, Container Queries, and CSS Custom Properties, we now have powerful tools to create truly responsive and maintainable stylesheets. This article will walk you through the latest CSS techniques that every frontend developer should know in 2024. We'll build practical examples and explore how these techniques can improve both developer experience and user experience.",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
+      "createdAt": "2025-12-10T02:30:00.000Z"
     }
   ],
   "comments": [
@@ -427,6 +537,14 @@
       "content": "Bài viết tuyệt vời",
       "parentId": null,
       "createdAt": "2025-11-30T15:19:55.486Z"
+    },
+    {
+      "id": "1765334330475-xn34hft2c",
+      "userId": "user-1",
+      "postId": "post-3",
+      "content": "alo",
+      "parentId": null,
+      "createdAt": "2025-12-10T02:38:50.475Z"
     }
   ],
   "likes": [
@@ -447,6 +565,18 @@
       "postId": "post-2",
       "userId": "user-1",
       "createdAt": "2024-01-14T16:00:00.000Z"
+    },
+    {
+      "id": "1765328443545-t5ndk2gz0",
+      "postId": "1764803774578-ooz1bduiw",
+      "userId": "1764549165351-qzcp4d0z9",
+      "createdAt": "2025-12-10T01:00:43.545Z"
+    },
+    {
+      "id": "1765334325019-hz73s0b9s",
+      "postId": "post-3",
+      "userId": "user-1",
+      "createdAt": "2025-12-10T02:38:45.019Z"
     }
   ],
   "shares": [
@@ -485,6 +615,12 @@
       "postId": "post-3",
       "userId": "1764548938075-heh03rqc4",
       "createdAt": "2025-12-03T23:35:07.297Z"
+    },
+    {
+      "id": "1765334246102-62185m6f6",
+      "postId": "post-3",
+      "userId": "user-1",
+      "createdAt": "2025-12-10T02:37:26.102Z"
     }
   ],
   "messages": [
@@ -662,6 +798,118 @@
       "receiverId": "user-2",
       "content": "test thôi",
       "createdAt": "2025-12-08T01:55:29.617Z"
+    },
+    {
+      "id": "1765327776470-r7iwrklke",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "Hello",
+      "createdAt": "2025-12-10T00:49:36.470Z"
+    },
+    {
+      "id": "1765327788172-kfz7590oi",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "Hello",
+      "createdAt": "2025-12-10T00:49:48.172Z"
+    },
+    {
+      "id": "1765327799699-zcqalvgpr",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "content": "??",
+      "createdAt": "2025-12-10T00:49:59.699Z"
+    },
+    {
+      "id": "1765328185659-fy3tevk6g",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "cho mình làm quen nhé",
+      "createdAt": "2025-12-10T00:56:25.659Z"
+    },
+    {
+      "id": "1765328214195-f1nuqfibf",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "content": "ok bạn",
+      "createdAt": "2025-12-10T00:56:54.195Z"
+    },
+    {
+      "id": "1765328245403-wleeec2dk",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "bạn tên là gì",
+      "createdAt": "2025-12-10T00:57:25.403Z"
+    },
+    {
+      "id": "1765328254425-3x7kx3yca",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "content": "mình tên là Dũng",
+      "createdAt": "2025-12-10T00:57:34.425Z"
+    },
+    {
+      "id": "1765328383632-nxd1iwexe",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "mình tên là Hạnh Phúc",
+      "createdAt": "2025-12-10T00:59:43.632Z"
+    },
+    {
+      "id": "1765328400089-kjnecepwg",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "content": "bạn học ở đâu",
+      "createdAt": "2025-12-10T01:00:00.089Z"
+    },
+    {
+      "id": "1765328412691-xudhoidnq",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "mình học ở FPT Polytechnic",
+      "createdAt": "2025-12-10T01:00:12.691Z"
+    },
+    {
+      "id": "1765328490799-v7qvigk56",
+      "senderId": "1764549165351-qzcp4d0z9",
+      "receiverId": "1764549184031-i6y3xt6nb",
+      "content": "ồ, mình cùng học FPT Polytechnic nè bạn",
+      "createdAt": "2025-12-10T01:01:30.799Z"
+    },
+    {
+      "id": "1765328509073-d80jeoykz",
+      "senderId": "1764549184031-i6y3xt6nb",
+      "receiverId": "1764549165351-qzcp4d0z9",
+      "content": "Vậy hả, rất vui được làm quen với bạn",
+      "createdAt": "2025-12-10T01:01:49.073Z"
+    },
+    {
+      "id": "1765334432542-1hdvg8blq",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "user-2",
+      "content": "Alooo",
+      "createdAt": "2025-12-10T02:40:32.542Z"
+    },
+    {
+      "id": "1765334439753-8sstrv1d0",
+      "senderId": "user-2",
+      "receiverId": "1765334379655-apweiozoz",
+      "content": "ddd",
+      "createdAt": "2025-12-10T02:40:39.753Z"
+    },
+    {
+      "id": "1765334448897-hz6ibmzn9",
+      "senderId": "1765334379655-apweiozoz",
+      "receiverId": "user-2",
+      "content": "sssssssssssssssss",
+      "createdAt": "2025-12-10T02:40:48.897Z"
+    },
+    {
+      "id": "1765334467766-u79hmr885",
+      "senderId": "user-2",
+      "receiverId": "1765334379655-apweiozoz",
+      "content": "ddd",
+      "createdAt": "2025-12-10T02:41:07.766Z"
     }
   ]
 }

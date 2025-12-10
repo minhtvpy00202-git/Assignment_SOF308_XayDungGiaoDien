@@ -42,7 +42,14 @@ export default {
     noPostsYet: 'Chưa có bài viết nào',
     writeComment: 'Viết bình luận...',
     postComment: 'Đăng',
-    sharedPost: 'đã chia sẻ bài viết này'
+    sharedPost: 'đã chia sẻ bài viết này',
+    notFound: 'Không tìm thấy bài viết',
+    notFoundDescription: 'Bài viết này có thể đã bị xóa hoặc không tồn tại.',
+    invalidId: 'ID bài viết không hợp lệ',
+    loadError: 'Không thể tải bài viết',
+    deleteError: 'Không thể xóa bài viết',
+    confirmDelete: 'Bạn có chắc chắn muốn xóa bài viết này?',
+    readMore: 'Xem thêm'
   },
   profile: {
     profile: 'Hồ sơ',
@@ -67,7 +74,8 @@ export default {
   },
   suggestions: {
     suggestions: 'Gợi ý kết bạn',
-    addFriend: 'Thêm bạn bè'
+    addFriend: 'Thêm bạn bè',
+    noSuggestions: 'Không có gợi ý nào'
   },
   common: {
     loading: 'Đang tải...',
@@ -83,7 +91,10 @@ export default {
     back: 'Quay lại',
     next: 'Tiếp theo',
     previous: 'Trước',
-    submit: 'Gửi'
+    submit: 'Gửi',
+    unknownUser: 'Người dùng không xác định',
+    backToHome: 'Về trang chủ',
+    dismiss: 'Bỏ qua'
   },
   validation: {
     required: 'Trường này là bắt buộc',
@@ -97,6 +108,55 @@ export default {
   language: {
     english: 'English',
     vietnamese: 'Tiếng Việt',
+    changeLanguage: 'Đổi ngôn ngữ'
+  },
+  search: {
+    placeholder: 'Tìm kiếm Blog360',
+    clear: 'Xóa tìm kiếm',
+    noResults: 'Không tìm thấy kết quả cho "{query}"',
+    noResultsSuggestion: 'Thử từ khóa khác hoặc kiểm tra chính tả',
+    users: 'Mọi người',
+    posts: 'Bài viết',
+    seeAll: 'Xem tất cả kết quả',
+    seeAllResults: 'Xem tất cả kết quả cho "{query}"',
+    recent: 'Tìm kiếm gần đây',
+    clearRecent: 'Xóa tìm kiếm gần đây',
+    clearAll: 'Xóa tất cả',
+    removeRecent: 'Xóa "{query}" khỏi tìm kiếm gần đây',
+    resultsLabel: 'Kết quả tìm kiếm',
+    loading: 'Đang tải...',
+    searching: 'Đang tìm kiếm...',
+    mutualFriend: '{count} bạn chung',
+    mutualFriends: '{count} bạn chung',
+    unknownAuthor: 'Tác giả không xác định'
+  },
+  time: {
+    justNow: 'Vừa xong',
+    minutesAgo: '{minutes} phút trước',
+    hourAgo: '1 giờ trước',
+    hoursAgo: '{hours} giờ trước',
+    dayAgo: '1 ngày trước',
+    daysAgo: '{days} ngày trước'
+  },
+  friends: {
+    friendRequests: 'Lời mời kết bạn',
+    accept: 'Chấp nhận',
+    reject: 'Từ chối'
+  },
+  translation: {
+    translating: 'Đang dịch...',
+    translated: 'Đã dịch',
+    showingOriginal: 'Hiển thị bản gốc',
+    showOriginal: 'Xem bản gốc',
+    showTranslated: 'Xem bản dịch',
+    autoTranslate: 'Tự động dịch',
+    enableTranslation: 'Bật dịch thuật',
+    disableTranslation: 'Tắt dịch thuật',
+    newFeature: 'Tính năng mới!',
+    bannerMessage: 'Bây giờ bạn có thể tự động dịch bài viết sang ngôn ngữ mong muốn.',
+    tryNow: 'Thử ngay',
+    tipTitle: 'Mẹo hay!',
+    tipMessage: 'Bạn có thể thay đổi ngôn ngữ để tự động dịch tất cả bài viết.',
     changeLanguage: 'Đổi ngôn ngữ'
   }
 }

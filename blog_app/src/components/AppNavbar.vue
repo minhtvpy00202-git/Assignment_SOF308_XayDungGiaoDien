@@ -23,6 +23,55 @@
         <span class="fw-bold brand-text">Blog360</span>
       </router-link>
 
+      <!-- Search Bar (Desktop) -->
+      <div class="search-container d-none d-lg-flex" v-if="isAuthenticated">
+        <div class="search-input-wrapper position-relative">
+          <i class="bi bi-search search-icon"></i>
+          <input
+            type="text"
+            class="form-control search-input"
+            :placeholder="t('search.placeholder')"
+            v-model="searchQuery"
+            @input="handleSearchInput"
+            @focus="handleSearchFocusEnhanced"
+            @blur="handleSearchBlur"
+            @keydown="handleKeyboard"
+            ref="searchInputRef"
+            role="combobox"
+            :aria-expanded="isDropdownOpen"
+            :aria-haspopup="true"
+            :aria-owns="isDropdownOpen ? 'search-dropdown' : undefined"
+            :aria-activedescendant="getActiveDescendantId()"
+            autocomplete="off"
+          />
+          <button
+            v-if="searchQuery"
+            @click="clearSearch"
+            class="btn-clear-search"
+            type="button"
+            :aria-label="t('search.clear')"
+          >
+            <i class="bi bi-x"></i>
+          </button>
+          
+          <!-- Search Dropdown -->
+          <SearchDropdown
+            id="search-dropdown"
+            :is-open="isDropdownOpen"
+            :results="searchResults"
+            :recent-searches="recentSearches"
+            :loading="searchLoading"
+            :selected-index="selectedIndex"
+            :query="searchQuery"
+            :current-user-id="currentUser?.id"
+            @select-result="handleSelectResult"
+            @select-recent="handleSelectRecent"
+            @clear-recent="clearRecentSearches"
+            @close="handleCloseDropdown"
+          />
+        </div>
+      </div>
+
       <!-- Mobile toggle button -->
       <button
         class="navbar-toggler"
@@ -38,6 +87,54 @@
 
       <!-- Navigation links -->
       <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Mobile Search Bar -->
+        <div class="search-container-mobile d-lg-none mb-3" v-if="isAuthenticated">
+          <div class="search-input-wrapper position-relative">
+            <i class="bi bi-search search-icon"></i>
+            <input
+              type="text"
+              class="form-control search-input"
+              :placeholder="t('search.placeholder')"
+              v-model="searchQuery"
+              @input="handleSearchInput"
+              @focus="handleSearchFocusEnhanced"
+              @blur="handleSearchBlur"
+              @keydown="handleKeyboard"
+              role="combobox"
+              :aria-expanded="isDropdownOpen"
+              :aria-haspopup="true"
+              :aria-owns="isDropdownOpen ? 'search-dropdown-mobile' : undefined"
+              :aria-activedescendant="getActiveDescendantId()"
+              autocomplete="off"
+            />
+            <button
+              v-if="searchQuery"
+              @click="clearSearch"
+              class="btn-clear-search"
+              type="button"
+              :aria-label="t('search.clear')"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            
+            <!-- Mobile Search Dropdown -->
+            <SearchDropdown
+              id="search-dropdown-mobile"
+              :is-open="isDropdownOpen"
+              :results="searchResults"
+              :recent-searches="recentSearches"
+              :loading="searchLoading"
+              :selected-index="selectedIndex"
+              :query="searchQuery"
+              :current-user-id="currentUser?.id"
+              @select-result="handleSelectResult"
+              @select-recent="handleSelectRecent"
+              @clear-recent="clearRecentSearches"
+              @close="handleCloseDropdown"
+            />
+          </div>
+        </div>
+        
         <ul class="navbar-nav ms-auto">
           <!-- Guest links (not authenticated) -->
           <template v-if="!isAuthenticated">
@@ -66,7 +163,7 @@
               </router-link>
             </li>
             
-            <!-- Language Toggle -->
+            <!-- Language & Translation Toggle -->
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle px-3"
@@ -76,7 +173,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="bi bi-translate me-1"></i>{{ locale === 'vi' ? '🇻🇳' : 'GB' }}
+                <i class="bi bi-translate me-1"></i>{{ locale === 'vi' ? '🇻🇳' : '🇬🇧' }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
                 <li>
@@ -89,13 +186,23 @@
                     🇻🇳 {{ t('language.vietnamese') }}
                   </button>
                 </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <button @click="toggleTranslation" class="dropdown-item d-flex align-items-center justify-content-between">
+                    <span>
+                      <i class="bi bi-robot me-2"></i>
+                      {{ t('translation.autoTranslate') }}
+                    </span>
+                    <i class="bi" :class="translationEnabled ? 'bi-toggle-on text-success' : 'bi-toggle-off text-muted'"></i>
+                  </button>
+                </li>
               </ul>
             </li>
             
             <!-- User Avatar Dropdown -->
             <li class="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle p-0 ms-lg-3"
+                class="nav-link dropdown-toggle d-flex align-items-center px-2 ms-lg-3"
                 href="#"
                 id="userDropdown"
                 role="button"
@@ -105,8 +212,9 @@
                 <img
                   :src="currentUser?.avatar || 'https://via.placeholder.com/40'"
                   :alt="currentUser?.name || 'User'"
-                  class="user-avatar"
+                  class="user-avatar me-2"
                 />
+                <span class="user-name d-none d-lg-inline">{{ currentUser?.name || 'User' }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li>
@@ -135,13 +243,114 @@
 </template>
 
 <script setup lang="ts">
+import { ref, nextTick } from 'vue'
 import { useAuth } from '../composables/useAuth'
 import { useRouter } from 'vue-router'
 import { useLocale } from '../composables/useLocale'
+import { useContentTranslation } from '../composables/useContentTranslation'
+import { useSearch } from '../composables/useSearch'
+import SearchDropdown from './SearchDropdown.vue'
+import type { SearchResult } from '../types'
 
 const { isAuthenticated, currentUser, logout } = useAuth()
 const router = useRouter()
 const { locale, setLocale, t } = useLocale()
+const { translationEnabled, toggleTranslation } = useContentTranslation()
+
+// Search functionality
+const {
+  query: searchQuery,
+  results: searchResults,
+  recentSearches,
+  loading: searchLoading,
+  selectedIndex,
+  isDropdownOpen,
+  search,
+  clearSearch: clearSearchComposable,
+  selectResult,
+  clearRecent,
+  handleKeyboard
+} = useSearch(currentUser.value?.id)
+
+const searchInputRef = ref<HTMLInputElement>()
+
+// Handle search input changes
+const handleSearchInput = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  search(target.value)
+}
+
+// Handle search blur with delay to allow for dropdown interactions
+const handleSearchBlur = () => {
+  // Add small delay to allow dropdown clicks to register
+  setTimeout(() => {
+    isDropdownOpen.value = false
+  }, 150)
+}
+
+// Clear search and focus input
+const clearSearch = () => {
+  clearSearchComposable()
+  nextTick(() => {
+    searchInputRef.value?.focus()
+  })
+}
+
+// Reset selection when dropdown opens/closes
+const handleSearchFocusEnhanced = () => {
+  // Always show dropdown on focus if there's content to show
+  if (searchQuery.value.trim() || recentSearches.value.length > 0) {
+    isDropdownOpen.value = true
+  }
+  // Reset selection when focusing
+  selectedIndex.value = -1
+}
+
+// Handle search result selection
+const handleSelectResult = (result: SearchResult) => {
+  selectResult(result)
+  // Force close dropdown and reset focus
+  isDropdownOpen.value = false
+  searchInputRef.value?.blur()
+}
+
+// Handle recent search selection
+const handleSelectRecent = (query: string) => {
+  searchQuery.value = query
+  search(query)
+}
+
+// Clear recent searches
+const clearRecentSearches = () => {
+  clearRecent()
+}
+
+// Handle dropdown close
+const handleCloseDropdown = () => {
+  isDropdownOpen.value = false
+}
+
+// Get active descendant ID for ARIA
+const getActiveDescendantId = () => {
+  if (selectedIndex.value < 0 || !isDropdownOpen.value) return ''
+  
+  // For recent searches
+  if (!searchQuery.value.trim() && recentSearches.value.length > 0) {
+    return `recent-search-${selectedIndex.value}`
+  }
+  
+  // For search results
+  if (searchResults.value.total > 0) {
+    const userCount = searchResults.value.users.length
+    if (selectedIndex.value < userCount) {
+      return `user-result-${selectedIndex.value}`
+    } else {
+      return `post-result-${selectedIndex.value - userCount}`
+    }
+  }
+  
+  return ''
+}
 
 const handleLogout = () => {
   logout()
@@ -154,6 +363,11 @@ const handleLogout = () => {
   background: #1877F2 !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
 }
 
 .navbar-brand {
@@ -237,6 +451,21 @@ const handleLogout = () => {
   transform: scale(1.05);
 }
 
+/* User Name */
+.user-name {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 0.95rem;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-toggle.d-flex:hover .user-name {
+  color: white;
+}
+
 /* Dropdown Menu */
 .dropdown-menu {
   border: none;
@@ -272,6 +501,92 @@ const handleLogout = () => {
   margin: 0.5rem 0;
 }
 
+/* Search Bar Styles */
+.search-container {
+  max-width: 320px;
+  width: 100%;
+}
+
+.search-container-mobile {
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 1000;
+}
+
+.search-input {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: white;
+  padding: 8px 40px 8px 40px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  outline: none;
+  color: white;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.btn-clear-search:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.btn-clear-search i {
+  font-size: 0.8rem;
+}
+
+/* Desktop search positioning */
+@media (min-width: 992px) {
+  .search-container {
+    margin-left: 2rem;
+    margin-right: auto;
+  }
+}
+
 /* Mobile specific */
 @media (max-width: 991px) {
   .navbar-collapse {
@@ -287,6 +602,16 @@ const handleLogout = () => {
   
   .dropdown-menu {
     background-color: rgba(255, 255, 255, 0.95);
+  }
+  
+  .search-input {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .search-input:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
   }
 }
 </style>

@@ -8,6 +8,7 @@ import { useRoute } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 import { useChatPopups } from '../composables/useChatPopups'
 import { apiService } from '../services/apiService'
+import { messageEventBus, MESSAGE_EVENTS } from '../utils/messageEvents'
 
 const { currentUser } = useAuth()
 const { openChatPopup } = useChatPopups()
@@ -85,6 +86,14 @@ const checkForNewMessages = async () => {
   }
 }
 
+// Handle instant message notification when someone sends a message
+const handleMessageSent = (data: { message: any, receiverId: string }) => {
+  // If the message is for current user, check immediately
+  if (data.receiverId === currentUser.value?.id) {
+    setTimeout(checkForNewMessages, 100) // Small delay to ensure message is saved
+  }
+}
+
 // Initialize
 const initialize = async () => {
   if (!currentUser.value) return
@@ -100,8 +109,11 @@ const initialize = async () => {
       lastCheckedMessageIds.value.add(m.id)
     })
     
-    // Start checking for new messages every 3 seconds
-    checkInterval = window.setInterval(checkForNewMessages, 3000)
+    // Listen for instant message events
+    messageEventBus.on(MESSAGE_EVENTS.NEW_MESSAGE_SENT, handleMessageSent)
+    
+    // Start checking for new messages every 2 seconds as backup
+    checkInterval = window.setInterval(checkForNewMessages, 2000)
   } catch (error) {
     console.error('Failed to initialize message listener:', error)
   }
@@ -117,5 +129,7 @@ onUnmounted(() => {
   if (checkInterval) {
     clearInterval(checkInterval)
   }
+  // Remove event listener
+  messageEventBus.off(MESSAGE_EVENTS.NEW_MESSAGE_SENT, handleMessageSent)
 })
 </script>

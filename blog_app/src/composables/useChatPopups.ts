@@ -18,8 +18,11 @@ export function useChatPopups() {
     
     if (existingIndex !== -1) {
       // If exists and minimized, restore it
-      chatPopups.value[existingIndex].isMinimized = false
-      chatPopups.value[existingIndex].messages = messages
+      const existingPopup = chatPopups.value[existingIndex]
+      if (existingPopup) {
+        existingPopup.isMinimized = false
+        existingPopup.messages = messages
+      }
     } else {
       // Create new popup (max 3 popups)
       if (chatPopups.value.length >= 3) {
