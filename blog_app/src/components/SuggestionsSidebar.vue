@@ -192,16 +192,28 @@ onMounted(async () => {
 <style scoped>
 .suggestions-sidebar {
   position: sticky;
-  top: 20px;
+  top: 100px;
 }
 
 .card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
-  border-bottom: 1px solid #dee2e6;
-  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(222, 226, 230, 0.3);
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 249, 250, 0.8));
+  border-radius: 20px 20px 0 0;
 }
 
 .list-group-flush {
@@ -210,11 +222,30 @@ onMounted(async () => {
 }
 
 .list-group-item {
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
+  border: none;
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+  margin: 0.25rem 0.5rem;
+}
+
+.list-group-item:hover {
+  background: rgba(24, 119, 242, 0.05);
+  transform: translateX(4px);
 }
 
 .rounded-circle {
   object-fit: cover;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.rounded-circle:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 24px rgba(24, 119, 242, 0.3);
+  border-color: #1877F2;
 }
 
 /* Custom scrollbar */

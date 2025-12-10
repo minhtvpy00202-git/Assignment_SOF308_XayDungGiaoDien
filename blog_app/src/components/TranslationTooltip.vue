@@ -79,11 +79,12 @@ onMounted(() => {
   right: 20px;
   z-index: 1025;
   max-width: 320px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  border: 1px solid #dee2e6;
-  animation: slideInRight 0.3s ease-out;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tooltip-content {
@@ -116,11 +117,11 @@ onMounted(() => {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(100%) scale(0.8);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 

@@ -151,7 +151,7 @@
       "id": "bafe",
       "senderId": "1765334379655-apweiozoz",
       "receiverId": "user-1",
-      "status": "pending",
+      "status": "accepted",
       "createdAt": "2025-12-10T02:39:58.971Z"
     },
     {
@@ -335,6 +335,12 @@
       "userId1": "1765334379655-apweiozoz",
       "userId2": "user-3",
       "createdAt": "2025-12-10T02:51:13.711Z"
+    },
+    {
+      "id": "e131",
+      "userId1": "1765334379655-apweiozoz",
+      "userId2": "user-1",
+      "createdAt": "2025-12-10T03:14:14.266Z"
     }
   ],
   "users": [
@@ -503,6 +509,14 @@
       "content": "CSS has evolved tremendously over the past few years. With new features like CSS Grid, Flexbox, Container Queries, and CSS Custom Properties, we now have powerful tools to create truly responsive and maintainable stylesheets. This article will walk you through the latest CSS techniques that every frontend developer should know in 2024. We'll build practical examples and explore how these techniques can improve both developer experience and user experience.",
       "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
       "createdAt": "2025-12-10T02:30:00.000Z"
+    },
+    {
+      "id": "1765336612429-srzo9ejta",
+      "title": "Xin chào",
+      "content": "Tôi là Minh",
+      "image": "https://cdn.24h.com.vn/upload/4-2025/images/2025-12-10/1765327760-vang-856-3407-width698height465.jpg",
+      "userId": "user-1",
+      "createdAt": "2025-12-10T03:16:52.429Z"
     }
   ],
   "comments": [

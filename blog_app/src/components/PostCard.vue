@@ -316,8 +316,35 @@ onMounted(() => {
 
 <style scoped>
 .card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #1877F2, #42A5F5, #1877F2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .rounded-circle {
@@ -337,13 +364,16 @@ onMounted(() => {
   text-decoration: underline;
 }
 
-/* Post image styling - full width with fixed aspect ratio */
+/* Enhanced 3D Post Image */
 .post-image-container {
   width: 100%;
   height: 400px;
   overflow: hidden;
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   position: relative;
+  border-radius: 16px;
+  margin: 0 1rem 1rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .post-image {
@@ -352,6 +382,11 @@ onMounted(() => {
   object-fit: cover;
   object-position: center;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.post-image-container:hover .post-image {
+  transform: scale(1.05);
 }
 
 /* Responsive image height */

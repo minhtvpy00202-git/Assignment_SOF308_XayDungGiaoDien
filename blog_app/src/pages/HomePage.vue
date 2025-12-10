@@ -10,19 +10,19 @@
       <div :class="currentUser ? 'col-md-6' : 'col-md-9'">
         <!-- Loading indicator -->
         <div v-if="loading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status">
+          <div class="spinner-border text-primary loading-pulse" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <p class="mt-2 text-muted">Loading posts...</p>
+          <p class="mt-2 text-muted text-shadow">Loading posts...</p>
         </div>
 
         <!-- Empty state -->
         <div v-else-if="posts.length === 0" class="text-center py-5">
-          <div class="card">
+          <div class="card glass-effect border-radius-xl hover-lift">
             <div class="card-body">
-              <h5 class="text-muted">No posts available</h5>
+              <h5 class="text-muted text-shadow">No posts available</h5>
               <p class="text-muted">Be the first to create a post!</p>
-              <router-link v-if="currentUser" to="/posts/create" class="btn btn-primary">
+              <router-link v-if="currentUser" to="/posts/create" class="btn btn-primary glow-effect">
                 Create Post
               </router-link>
             </div>
@@ -30,12 +30,13 @@
         </div>
 
         <!-- Posts list -->
-        <div v-else>
+        <div v-else class="posts-container">
           <PostCard
-            v-for="post in postsWithAuthors"
+            v-for="(post, index) in postsWithAuthors"
             :key="post.id"
             :post="post"
             :author="postAuthors[post.userId]!"
+            :class="['magnetic-hover', index % 2 === 0 ? 'card-hover' : '']"
             @edit="handleEdit"
             @delete="handleDelete"
           />
@@ -124,10 +125,20 @@ onMounted(() => {
 <style scoped>
 .container-fluid {
   max-width: 1400px;
+  position: relative;
 }
 
 .spinner-border {
   width: 3rem;
   height: 3rem;
+}
+
+.posts-container {
+  position: relative;
+}
+
+.posts-container .card {
+  margin-bottom: 2rem;
+  animation-duration: 8s;
 }
 </style>
