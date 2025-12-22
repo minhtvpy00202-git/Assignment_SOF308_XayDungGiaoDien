@@ -5,7 +5,7 @@
         <img :src="otherUser?.avatar" :alt="otherUser?.name" class="rounded-circle me-2" width="32" height="32">
         <div>
           <h6 class="mb-0">{{ otherUser?.name }}</h6>
-          <small class="text-muted">{{ t('messages.active') }}</small>
+          <small class="text-muted">{{ userStatus }}</small>
         </div>
       </div>
       <div class="d-flex gap-2">
@@ -23,9 +23,19 @@
     </div>
 
     <div class="chat-popup-body" ref="messagesContainer">
-      <div v-for="message in messages" :key="message.id" class="message-wrapper" :class="{ 'own-message': message.senderId === currentUser?.id }">
-        <div class="message-bubble">
-          {{ message.content }}
+      <div v-for="(message, index) in messages" :key="message.id" class="message-wrapper" :class="{ 'own-message': message.senderId === currentUser?.id }">
+        <div class="message-container">
+          <div class="message-bubble">
+            {{ message.content }}
+          </div>
+          <!-- Status text for own messages (only show on last message) -->
+          <div v-if="message.senderId === currentUser?.id && isLastOwnMessage(index)" class="message-status-text">
+            {{ getStatusText(message.status) }}
+          </div>
+          <!-- Time for received messages (only show on last received message) -->
+          <div v-if="message.senderId !== currentUser?.id && isLastReceivedMessage(index)" class="message-time-text">
+            {{ formatMessageTime(message.createdAt) }}
+          </div>
         </div>
       </div>
     </div>
@@ -48,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import type { Message, User } from '../types'
 import { useAuth } from '../composables/useAuth'
 import { useLocale } from '../composables/useLocale'
@@ -79,7 +89,50 @@ const isOpen = ref(true)
 const newMessage = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
 const messages = ref<Message[]>(props.initialMessages)
+const otherUserData = ref<User | null>(props.otherUser)
 let refreshInterval: number | null = null
+let userStatusInterval: number | null = null
+
+// Computed property for user status
+const userStatus = computed(() => {
+  if (!props.otherUser) return t('messages.offline')
+  
+  // Check if user has isOnline property and lastSeen
+  if (props.otherUser.isOnline) {
+    return t('messages.active')
+  }
+  
+  // If user has lastSeen, calculate time difference
+  if (props.otherUser.lastSeen) {
+    const lastSeenTime = new Date(props.otherUser.lastSeen)
+    const now = new Date()
+    const diffMinutes = Math.floor((now.getTime() - lastSeenTime.getTime()) / (1000 * 60))
+    
+    if (diffMinutes < 5) return t('messages.active')
+    if (diffMinutes < 60) return `${diffMinutes} phút trước`
+    if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)} giờ trước`
+    return `${Math.floor(diffMinutes / 1440)} ngày trước`
+  }
+  
+  // Fallback to old logic if no online status available
+  if (!messages.value.length) return t('messages.offline')
+  
+  // Get the last message from the other user
+  const otherUserMessages = messages.value.filter(msg => msg.senderId === props.otherUser?.id)
+  if (!otherUserMessages.length) return t('messages.offline')
+  
+  const lastMessage = otherUserMessages[otherUserMessages.length - 1]
+  if (!lastMessage) return t('messages.offline')
+  
+  const lastMessageTime = new Date(lastMessage.createdAt)
+  const now = new Date()
+  const diffMinutes = Math.floor((now.getTime() - lastMessageTime.getTime()) / (1000 * 60))
+  
+  if (diffMinutes < 5) return t('messages.active')
+  if (diffMinutes < 60) return `${diffMinutes} phút trước`
+  if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)} giờ trước`
+  return `${Math.floor(diffMinutes / 1440)} ngày trước`
+})
 
 // Watch for new messages from parent
 watch(() => props.initialMessages, (newMessages) => {
@@ -109,14 +162,31 @@ const refreshMessages = async () => {
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     )
     
-    // Only update if there are new messages
-    if (sortedMessages.length !== messages.value.length) {
+    // Only update if there are new messages or status changed
+    const hasChanges = sortedMessages.length !== messages.value.length ||
+      sortedMessages.some((msg, idx) => msg.status !== messages.value[idx]?.status)
+    
+    if (hasChanges) {
       messages.value = sortedMessages
       updateChatPopupMessages(props.otherUser.id, sortedMessages)
       scrollToBottom()
     }
+    
+    // Mark received messages as seen
+    await markMessagesAsSeen()
   } catch (error) {
     console.error('Failed to refresh messages:', error)
+  }
+}
+
+// Mark messages from other user as seen
+const markMessagesAsSeen = async () => {
+  if (!currentUser.value || !props.otherUser) return
+  
+  try {
+    await apiService.markMessagesAsSeen(currentUser.value.id, props.otherUser.id)
+  } catch (error) {
+    console.error('Failed to mark messages as seen:', error)
   }
 }
 
@@ -148,6 +218,49 @@ const close = () => {
   emit('close')
 }
 
+// Get status text for message
+const getStatusText = (status?: string) => {
+  switch (status) {
+    case 'sent':
+      return t('messages.sent')
+    case 'delivered':
+      return t('messages.delivered')
+    case 'seen':
+      return t('messages.seen')
+    default:
+      return t('messages.sent')
+  }
+}
+
+// Check if this is the last own message
+const isLastOwnMessage = (index: number) => {
+  if (!currentUser.value) return false
+  const ownMessages = messages.value.filter(m => m.senderId === currentUser.value?.id)
+  if (ownMessages.length === 0) return false
+  const lastOwnMessage = ownMessages[ownMessages.length - 1]
+  const currentMessage = messages.value[index]
+  return currentMessage && lastOwnMessage && currentMessage.id === lastOwnMessage.id
+}
+
+// Check if this is the last received message
+const isLastReceivedMessage = (index: number) => {
+  if (!props.otherUser) return false
+  const receivedMessages = messages.value.filter(m => m.senderId === props.otherUser?.id)
+  if (receivedMessages.length === 0) return false
+  const lastReceivedMessage = receivedMessages[receivedMessages.length - 1]
+  const currentMessage = messages.value[index]
+  return currentMessage && lastReceivedMessage && currentMessage.id === lastReceivedMessage.id
+}
+
+// Format message time
+const formatMessageTime = (timestamp: string) => {
+  const date = new Date(timestamp)
+  return date.toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
 // Start auto-refresh for messages
 const startAutoRefresh = () => {
   refreshInterval = window.setInterval(refreshMessages, 1000) // Every 1 second for faster sync
@@ -169,11 +282,14 @@ const handleMessageSent = (data: { message: any, receiverId: string }) => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   scrollToBottom()
   startAutoRefresh()
   // Listen for instant message events
   messageEventBus.on(MESSAGE_EVENTS.NEW_MESSAGE_SENT, handleMessageSent)
+  
+  // Mark messages as seen when chat opens
+  await markMessagesAsSeen()
 })
 
 onUnmounted(() => {
@@ -237,15 +353,31 @@ onUnmounted(() => {
 
 .message-wrapper {
   display: flex;
-  margin-bottom: 8px;
+  margin: 0;
+  padding: 0;
 }
 
 .message-wrapper.own-message {
   justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  margin: 0;
+  padding: 0;
+}
+
+.own-message .message-container {
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
 }
 
 .message-bubble {
-  max-width: 70%;
   padding: 8px 12px;
   border-radius: 18px;
   background: #e4e6eb;
@@ -257,6 +389,20 @@ onUnmounted(() => {
 .own-message .message-bubble {
   background: #0084ff;
   color: white;
+}
+
+.message-status-text {
+  font-size: 11px;
+  color: #65676b;
+  margin-top: 1px;
+  padding-right: 4px;
+}
+
+.message-time-text {
+  font-size: 11px;
+  color: #65676b;
+  margin-top: 1px;
+  padding-left: 4px;
 }
 
 .chat-popup-footer {

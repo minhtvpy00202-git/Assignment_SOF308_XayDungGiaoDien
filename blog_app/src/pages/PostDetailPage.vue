@@ -96,6 +96,18 @@
             <!-- Post Content -->
             <div class="post-content mb-4" v-html="formattedContent"></div>
 
+            <!-- Post Images -->
+            <div v-if="displayImages.length === 1" class="mb-4">
+              <div class="post-detail-image-container">
+                <img :src="displayImages[0]" class="img-fluid rounded" :alt="displayPost?.title" />
+              </div>
+            </div>
+            <div v-else-if="displayImages.length > 1" class="post-detail-images-grid mb-4">
+              <div v-for="(src, idx) in displayImages" :key="idx" class="post-detail-image-cell">
+                <img :src="src" class="img-fluid rounded" :alt="displayPost?.title" />
+              </div>
+            </div>
+
             <!-- Post Actions -->
             <div class="d-flex align-items-center justify-content-between border-top pt-3">
               <div class="d-flex align-items-center gap-3">
@@ -219,6 +231,18 @@ const formattedContent = computed(() => {
     .replace(/\n/g, '<br>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
+})
+
+// Normalized images array for display (support legacy `image`)
+const displayImages = computed(() => {
+  if (!displayPost.value) return []
+  // prefer `images` array
+  if (Array.isArray(displayPost.value.images) && displayPost.value.images.length > 0) {
+    return displayPost.value.images
+  }
+  // fallback to legacy single `image` field
+  if ((displayPost.value as any).image) return [(displayPost.value as any).image]
+  return []
 })
 
 // Methods
@@ -397,6 +421,24 @@ onMounted(() => {
   font-size: 4rem;
   color: #dee2e6;
   margin-bottom: 1rem;
+}
+
+.post-detail-image-container img {
+  width: 100%;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+.post-detail-images-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.post-detail-image-cell img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {

@@ -8,12 +8,16 @@ import type {
   UpdatePostData,
   Comment,
   CreateCommentData,
+  CommentLike,
+  CreateCommentLikeData,
   Like,
   CreateLikeData,
   Share,
   CreateShareData,
   Message,
-  CreateMessageData
+  CreateMessageData,
+  Notification,
+  CreateNotificationData
 } from '../types'
 
 class ApiService {
@@ -75,7 +79,7 @@ class ApiService {
     const newPost = {
       id: this.generateId(),
       ...postData,
-      image: postData.image || '',
+      images: postData.images || [],
       createdAt: new Date().toISOString()
     }
     const response = await this.axiosInstance.post<Post>('/posts', newPost)
@@ -116,6 +120,35 @@ class ApiService {
 
   async deleteComment(id: string): Promise<void> {
     await this.axiosInstance.delete(`/comments/${id}`)
+  }
+
+  // Comment Like endpoints
+  async getCommentLikes(): Promise<CommentLike[]> {
+    const response = await this.axiosInstance.get<CommentLike[]>('/commentLikes')
+    return response.data
+  }
+
+  async getCommentLikesByCommentId(commentId: string): Promise<CommentLike[]> {
+    const response = await this.axiosInstance.get<CommentLike[]>(`/commentLikes?commentId=${commentId}`)
+    return response.data
+  }
+
+  async createCommentLike(likeData: CreateCommentLikeData): Promise<CommentLike> {
+    const newLike = {
+      id: this.generateId(),
+      ...likeData,
+      createdAt: new Date().toISOString()
+    }
+    const response = await this.axiosInstance.post<CommentLike>('/commentLikes', newLike)
+    return response.data
+  }
+
+  async deleteCommentLike(commentId: string, userId: string): Promise<void> {
+    const likes = await this.getCommentLikesByCommentId(commentId)
+    const like = likes.find(l => l.userId === userId)
+    if (like) {
+      await this.axiosInstance.delete(`/commentLikes/${like.id}`)
+    }
   }
 
   // Like endpoints
@@ -186,10 +219,80 @@ class ApiService {
     const newMessage = {
       id: this.generateId(),
       ...messageData,
+      status: 'sent' as const,
       createdAt: new Date().toISOString()
     }
     const response = await this.axiosInstance.post<Message>('/messages', newMessage)
     return response.data
+  }
+
+  async updateMessageStatus(id: string, status: 'sent' | 'delivered' | 'seen'): Promise<Message> {
+    const response = await this.axiosInstance.patch<Message>(`/messages/${id}`, { status })
+    return response.data
+  }
+
+  async markMessagesAsDelivered(receiverId: string, senderId: string): Promise<void> {
+    const messages = await this.getMessagesBetweenUsers(receiverId, senderId)
+    const undeliveredMessages = messages.filter(
+      m => m.senderId === senderId && m.receiverId === receiverId && (!m.status || m.status === 'sent')
+    )
+    for (const msg of undeliveredMessages) {
+      await this.updateMessageStatus(msg.id, 'delivered')
+    }
+  }
+
+  async markMessagesAsSeen(receiverId: string, senderId: string): Promise<void> {
+    const messages = await this.getMessagesBetweenUsers(receiverId, senderId)
+    const unseenMessages = messages.filter(
+      m => m.senderId === senderId && m.receiverId === receiverId && m.status !== 'seen'
+    )
+    for (const msg of unseenMessages) {
+      await this.updateMessageStatus(msg.id, 'seen')
+    }
+  }
+
+  // ==================== Notification Methods ====================
+
+  async getNotificationsByUserId(userId: string): Promise<Notification[]> {
+    const response = await this.axiosInstance.get<Notification[]>(`/notifications?userId=${userId}`)
+    return response.data
+  }
+
+  async createNotification(data: CreateNotificationData): Promise<Notification> {
+    const newNotification: Notification = {
+      id: this.generateId(),
+      ...data,
+      isRead: false,
+      createdAt: new Date().toISOString()
+    }
+    const response = await this.axiosInstance.post<Notification>('/notifications', newNotification)
+    return response.data
+  }
+
+  async markNotificationAsRead(id: string): Promise<Notification> {
+    const response = await this.axiosInstance.patch<Notification>(`/notifications/${id}`, { isRead: true })
+    return response.data
+  }
+
+  async deleteNotification(id: string): Promise<void> {
+    await this.axiosInstance.delete(`/notifications/${id}`)
+  }
+
+  // User online status methods
+  async updateUserOnlineStatus(userId: string, isOnline: boolean): Promise<User> {
+    const userData = {
+      isOnline,
+      lastSeen: new Date().toISOString()
+    }
+    return this.updateUser(userId, userData)
+  }
+
+  async setUserOnline(userId: string): Promise<User> {
+    return this.updateUserOnlineStatus(userId, true)
+  }
+
+  async setUserOffline(userId: string): Promise<User> {
+    return this.updateUserOnlineStatus(userId, false)
   }
 
   // Utility method for generating unique IDs

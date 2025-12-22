@@ -1,6 +1,7 @@
 export { useAuth } from './useAuth'
 export { usePosts } from './usePosts'
 export { useComments } from './useComments'
+export { useCommentLikes } from './useCommentLikes'
 export { useLikes } from './useLikes'
 export { useShares } from './useShares'
 export { useMessages } from './useMessages'

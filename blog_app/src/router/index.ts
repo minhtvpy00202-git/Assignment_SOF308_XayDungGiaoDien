@@ -10,6 +10,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/newsfeed',
+    name: 'NewsFeed',
+    component: () => import('../pages/HomePage.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: LoginPage,

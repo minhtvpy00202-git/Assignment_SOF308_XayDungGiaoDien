@@ -163,7 +163,6 @@ const handleSubmit = async () => {
 .card {
   border: none;
   border-radius: 16px;
-  backdrop-filter: blur(10px);
 }
 
 .logo-container {

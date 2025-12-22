@@ -1,8 +1,10 @@
 import { ref } from 'vue'
 import { friendService } from '../services/friendService'
 import type { User, FriendRequest } from '../types'
+import { useNotifications } from './useNotifications'
 
 export function useFriends() {
+  const { createNotification } = useNotifications()
   const friends = ref<User[]>([])
   const suggestedUsers = ref<User[]>([])
   const friendRequests = ref<FriendRequest[]>([])
@@ -53,6 +55,18 @@ export function useFriends() {
     error.value = null
     try {
       await friendService.sendFriendRequest({ senderId, receiverId })
+      
+      // Create notification for friend request receiver
+      try {
+        await createNotification({
+          userId: receiverId,
+          fromUserId: senderId,
+          type: 'friend_request'
+        })
+      } catch (notifErr) {
+        console.error('Failed to create friend request notification:', notifErr)
+      }
+      
       // Refresh suggested users
       await fetchSuggestedUsers(senderId)
     } catch (err) {

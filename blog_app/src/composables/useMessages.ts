@@ -2,6 +2,7 @@ import { ref, readonly, type Ref } from 'vue'
 import type { Message, CreateMessageData, Conversation } from '../types'
 import { apiService } from '../services/apiService'
 import { useAuth } from './useAuth'
+import { useNotifications } from './useNotifications'
 import { messageEventBus, MESSAGE_EVENTS } from '../utils/messageEvents'
 
 const conversations: Ref<Conversation[]> = ref([])
@@ -10,6 +11,7 @@ const loading: Ref<boolean> = ref(false)
 
 export function useMessages() {
   const { currentUser } = useAuth()
+  const { createNotification } = useNotifications()
 
   const fetchConversations = async (): Promise<void> => {
     if (!currentUser.value) {
@@ -149,6 +151,18 @@ export function useMessages() {
 
       // Refresh conversations to update the list
       await fetchConversations()
+      
+      // Create notification for message receiver
+      try {
+        await createNotification({
+          userId: receiverId,
+          fromUserId: currentUser.value.id,
+          type: 'message',
+          message: content.trim().substring(0, 50) + (content.length > 50 ? '...' : '')
+        })
+      } catch (err) {
+        console.error('Failed to create message notification:', err)
+      }
       
       // Emit event for instant notification
       messageEventBus.emit(MESSAGE_EVENTS.NEW_MESSAGE_SENT, {

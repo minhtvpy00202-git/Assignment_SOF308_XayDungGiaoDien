@@ -79,8 +79,7 @@ onMounted(() => {
   right: 20px;
   z-index: 1025;
   max-width: 320px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.98);
   border-radius: 16px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);

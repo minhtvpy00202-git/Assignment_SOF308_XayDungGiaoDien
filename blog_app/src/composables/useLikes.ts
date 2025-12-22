@@ -2,11 +2,13 @@ import { ref, type Ref } from 'vue'
 import type { Like } from '../types'
 import { apiService } from '../services/apiService'
 import { useAuth } from './useAuth'
+import { useNotifications } from './useNotifications'
 
 const likesCache: Ref<Map<string, Like[]>> = ref(new Map())
 
 export function useLikes() {
   const { currentUser } = useAuth()
+  const { createNotification } = useNotifications()
 
   const fetchLikesByPostId = async (postId: string): Promise<Like[]> => {
     try {
@@ -50,6 +52,22 @@ export function useLikes() {
           postId,
           userId: currentUser.value.id
         })
+        
+        // Create notification for post owner
+        try {
+          const post = await apiService.getPostById(postId)
+          // Don't notify if user likes their own post
+          if (post.userId !== currentUser.value.id) {
+            await createNotification({
+              userId: post.userId,
+              fromUserId: currentUser.value.id,
+              type: 'like',
+              postId
+            })
+          }
+        } catch (err) {
+          console.error('Failed to create like notification:', err)
+        }
       }
 
       // Refresh the likes cache for this post

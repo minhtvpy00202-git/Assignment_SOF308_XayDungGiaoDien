@@ -152,7 +152,7 @@
           <!-- Authenticated user links -->
           <template v-else>
             <li class="nav-item">
-              <router-link to="/" class="nav-link px-3">
+              <router-link to="/newsfeed" class="nav-link px-3">
                 <i class="bi bi-house-door me-1"></i>{{ t('navbar.home') }}
               </router-link>
             </li>
@@ -196,7 +196,13 @@
                     <i class="bi" :class="translationEnabled ? 'bi-toggle-on text-success' : 'bi-toggle-off text-muted'"></i>
                   </button>
                 </li>
+
               </ul>
+            </li>
+            
+            <!-- Notification Bell -->
+            <li class="nav-item d-flex align-items-center">
+              <NotificationBell />
             </li>
             
             <!-- User Avatar Dropdown -->
@@ -248,14 +254,17 @@ import { useAuth } from '../composables/useAuth'
 import { useRouter } from 'vue-router'
 import { useLocale } from '../composables/useLocale'
 import { useContentTranslation } from '../composables/useContentTranslation'
+
 import { useSearch } from '../composables/useSearch'
 import SearchDropdown from './SearchDropdown.vue'
+import NotificationBell from './NotificationBell.vue'
 import type { SearchResult } from '../types'
 
 const { isAuthenticated, currentUser, logout } = useAuth()
 const router = useRouter()
 const { locale, setLocale, t } = useLocale()
 const { translationEnabled, toggleTranslation } = useContentTranslation()
+
 
 // Search functionality
 const {
@@ -368,7 +377,6 @@ const handleLogout = () => {
   left: 0;
   right: 0;
   z-index: 1030;
-  backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -493,8 +501,7 @@ const handleLogout = () => {
 /* Enhanced 3D Dropdown Menu */
 .dropdown-menu {
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   border-radius: 16px;
   margin-top: 0.5rem;
@@ -578,15 +585,14 @@ const handleLogout = () => {
 }
 
 .search-input {
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 25px;
   color: white;
   padding: 12px 45px 12px 45px;
   font-size: 0.9rem;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   width: 100%;
-  backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -677,4 +683,19 @@ const handleLogout = () => {
     border-color: rgba(255, 255, 255, 0.5);
   }
 }
+
+:global(.christmas-mode .navbar) {
+  background: linear-gradient(
+    135deg,
+    #b11226,
+    #c41e3a
+  ) !important;
+
+  box-shadow:
+    0 4px 20px rgba(196, 30, 58, 0.6),
+    inset 0 -2px 0 rgba(255, 215, 0, 0.7);
+
+  border-bottom: none;
+}
+
 </style>

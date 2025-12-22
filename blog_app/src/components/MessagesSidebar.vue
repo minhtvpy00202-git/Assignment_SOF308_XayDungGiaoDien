@@ -4,32 +4,61 @@
       <div class="card-header">
         <h5 class="mb-0">Messages</h5>
       </div>
-      
-      <!-- Loading state -->
-      <div v-if="loading" class="card-body text-center py-4">
-        <div class="spinner-border spinner-border-sm text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+
+      <!-- Search Box -->
+      <div class="card-body p-3 border-bottom">
+        <div class="search-container">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              v-model="searchQuery"
+              type="text"
+              class="form-control"
+              placeholder="Search messages..."
+              @input="handleSearch"
+            />
+            <button
+              v-if="searchQuery"
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="clearSearch"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Initial loading only -->
+      <div v-if="initialLoading" class="card-body text-center py-4">
+        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
         <p class="mt-2 mb-0 text-muted small">Loading...</p>
       </div>
-      
+
       <!-- Empty state -->
-      <div v-else-if="allFriendsWithConversations.length === 0" class="card-body text-center py-4">
-        <p class="text-muted small mb-0">No friends yet. Add friends to start messaging!</p>
+      <div
+        v-else-if="allFriendsWithConversations.length === 0"
+        class="card-body text-center py-4"
+      >
+        <p class="text-muted small mb-0">
+          No friends yet. Add friends to start messaging!
+        </p>
       </div>
-      
-      <!-- Friends list with conversations -->
+
+      <!-- Friends list -->
       <div v-else class="list-group list-group-flush">
         <div
-          v-for="friend in allFriendsWithConversations"
+          v-for="friend in filteredFriendsWithConversations"
           :key="friend.userId"
-          class="list-group-item list-group-item-action position-relative"
+          class="list-group-item list-group-item-action"
+          style="cursor: pointer"
           @click="handleConversationClick(friend.userId)"
-          style="cursor: pointer;"
         >
           <div class="d-flex align-items-center">
-            <router-link 
-              :to="`/profile/${friend.userId}`" 
+            <router-link
+              :to="`/profile/${friend.userId}`"
               @click.stop
               class="text-decoration-none"
             >
@@ -41,22 +70,34 @@
                 height="40"
               />
             </router-link>
+
             <div class="flex-grow-1">
               <div class="d-flex justify-content-between align-items-center">
-                <router-link 
-                  :to="`/profile/${friend.userId}`" 
+                <router-link
+                  :to="`/profile/${friend.userId}`"
                   @click.stop
                   class="text-decoration-none"
                 >
-                  <h6 class="mb-0 small fw-semibold text-dark">{{ friend.userName }}</h6>
+                  <h6 class="mb-0 small fw-semibold text-dark" v-html="highlightMatch(friend.userName, searchQuery)">
+                  </h6>
                 </router-link>
-                <small v-if="friend.lastMessageTime" class="text-muted" style="font-size: 0.7rem;">
+
+                <small
+                  v-if="friend.lastMessageTime"
+                  class="text-muted"
+                  style="font-size: 0.7rem"
+                >
                   {{ formatTime(friend.lastMessageTime) }}
                 </small>
               </div>
-              <p v-if="friend.lastMessage" class="mb-0 text-muted small text-truncate">
-                {{ friend.lastMessage }}
+
+              <p
+                v-if="friend.lastMessage"
+                class="mb-0 text-muted small text-truncate"
+                v-html="highlightMatch(friend.lastMessage, searchQuery)"
+              >
               </p>
+
               <p v-else class="mb-0 text-muted small fst-italic">
                 Start a conversation
               </p>
@@ -68,6 +109,7 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuth } from '../composables/useAuth'
@@ -78,100 +120,145 @@ import { apiService } from '../services/apiService'
 import type { Conversation } from '../types'
 
 const { currentUser } = useAuth()
-const { conversations, loading: messagesLoading, fetchConversations } = useMessages()
-const { friends, loading: friendsLoading, fetchFriends } = useFriends()
+const { conversations, fetchConversations } = useMessages()
+const { friends, fetchFriends } = useFriends()
 const { openChatPopup } = useChatPopups()
 
+const initialLoading = ref(true)
+const searchQuery = ref('')
 let refreshInterval: number | null = null
 
-const loading = computed(() => messagesLoading.value || friendsLoading.value)
-
-// Combine friends with their conversation data
-const allFriendsWithConversations = computed(() => {
+/* ===== Combine friends + conversations ===== */
+const allFriendsWithConversations = computed<Conversation[]>(() => {
   if (!friends.value.length) return []
 
-  return friends.value.map(friend => {
-    // Find existing conversation with this friend
-    const conversation = conversations.value.find(c => c.userId === friend.id)
+  return friends.value
+    .map(friend => {
+      const conversation = conversations.value.find(
+        c => c.userId === friend.id
+      )
+
+      return (
+        conversation || {
+          userId: friend.id,
+          userName: friend.name,
+          userAvatar: friend.avatar,
+          lastMessage: '',
+          lastMessageTime: '',
+          unreadCount: 0
+        }
+      )
+    })
+    .sort((a, b) => {
+      if (!a.lastMessageTime) return 1
+      if (!b.lastMessageTime) return -1
+      return (
+        new Date(b.lastMessageTime).getTime() -
+        new Date(a.lastMessageTime).getTime()
+      )
+    })
+})
+
+/* ===== Filtered conversations based on search query ===== */
+const filteredFriendsWithConversations = computed(() => {
+  if (!searchQuery.value.trim()) {
+    return allFriendsWithConversations.value
+  }
+
+  const query = searchQuery.value.toLowerCase().trim()
+  return allFriendsWithConversations.value.filter(friend => {
+    // Search by user name
+    const nameMatch = friend.userName.toLowerCase().includes(query)
+    // Search by message content
+    const messageMatch = friend.lastMessage.toLowerCase().includes(query)
     
-    if (conversation) {
-      return conversation
-    } else {
-      // Create a placeholder conversation for friends without messages
-      return {
-        userId: friend.id,
-        userName: friend.name,
-        userAvatar: friend.avatar,
-        lastMessage: '',
-        lastMessageTime: '',
-        unreadCount: 0
-      } as Conversation
-    }
-  }).sort((a, b) => {
-    // Sort by last message time, friends without messages go to bottom
-    if (!a.lastMessageTime) return 1
-    if (!b.lastMessageTime) return -1
-    return new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
+    return nameMatch || messageMatch
   })
 })
 
-// Format time for display
+/* ===== Handle search input ===== */
+const handleSearch = () => {
+  // The filtering is handled by the computed property
+  // This function can be used for additional search logic if needed
+}
+
+/* ===== Clear search ===== */
+const clearSearch = () => {
+  searchQuery.value = ''
+}
+
+/* ===== Highlight matching text ===== */
+const highlightMatch = (text: string, query: string) => {
+  if (!query.trim() || !text) return text
+  
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+  return text.replace(regex, '<mark>$1</mark>')
+}
+
+/* ===== Format time ===== */
 const formatTime = (timestamp: string) => {
   if (!timestamp) return ''
   const date = new Date(timestamp)
   const now = new Date()
-  const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60)
-  
-  if (diffInHours < 24) {
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-  } else {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  }
+  const diffHours =
+    (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+
+  return diffHours < 24
+    ? date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    : date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric'
+      })
 }
 
-// Handle conversation click - open chat popup
+/* ===== Click conversation ===== */
 const handleConversationClick = async (userId: string) => {
   try {
-    // Fetch user details
     const user = await apiService.getUserById(userId)
-    
-    // Fetch messages
     const messages = await apiService.getMessagesBetweenUsers(
       currentUser.value!.id,
       userId
     )
-    
-    // Sort messages
-    const sortedMessages = messages.sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+
+    openChatPopup(
+      user,
+      userId,
+      messages.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() -
+          new Date(b.createdAt).getTime()
+      )
     )
-    
-    // Open chat popup
-    openChatPopup(user, userId, sortedMessages)
-  } catch (error) {
-    console.error('Failed to open chat:', error)
+  } catch (err) {
+    console.error('Open chat failed:', err)
   }
 }
 
-// Load conversations and friends
-const loadData = async () => {
-  if (currentUser.value) {
-    await Promise.all([
-      fetchConversations(),
-      fetchFriends(currentUser.value.id)
-    ])
-  }
+/* ===== Load data ===== */
+const loadInitialData = async () => {
+  if (!currentUser.value) return
+
+  initialLoading.value = true
+
+  await Promise.all([
+    fetchFriends(currentUser.value.id),
+    fetchConversations()
+  ])
+
+  initialLoading.value = false
 }
 
-// Start auto-refresh for conversations
+/* ===== Auto refresh (silent) ===== */
 const startAutoRefresh = () => {
-  // Refresh every 5 seconds
+  stopAutoRefresh()
   refreshInterval = window.setInterval(() => {
-    loadData()
+    fetchConversations() // silent refresh
   }, 5000)
 }
 
-// Stop auto-refresh
 const stopAutoRefresh = () => {
   if (refreshInterval) {
     clearInterval(refreshInterval)
@@ -179,9 +266,9 @@ const stopAutoRefresh = () => {
   }
 }
 
-// Load data on mount
+/* ===== Lifecycle ===== */
 onMounted(async () => {
-  await loadData()
+  await loadInitialData()
   startAutoRefresh()
 })
 
@@ -190,10 +277,12 @@ onUnmounted(() => {
 })
 </script>
 
+
 <style scoped>
 .messages-sidebar {
   position: sticky;
   top: 20px;
+  min-height: 433px;
 }
 
 .card {
@@ -203,6 +292,26 @@ onUnmounted(() => {
 .card-header {
   background-color: #fff;
   border-bottom: 1px solid #dee2e6;
+}
+
+.search-container {
+  margin-bottom: 0;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+}
+
+.form-control {
+  border-color: #dee2e6;
+  font-size: 0.875rem;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
 .list-group-flush {
@@ -226,5 +335,13 @@ onUnmounted(() => {
 
 .list-group-flush::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Highlight matches */
+:deep(mark) {
+  background-color: #fff3cd;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 500;
 }
 </style>

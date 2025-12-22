@@ -2,11 +2,13 @@ import { ref, type Ref } from 'vue'
 import type { Share } from '../types'
 import { apiService } from '../services/apiService'
 import { useAuth } from './useAuth'
+import { useNotifications } from './useNotifications'
 
 const sharesCache: Ref<Map<string, Share[]>> = ref(new Map())
 
 export function useShares() {
   const { currentUser } = useAuth()
+  const { createNotification } = useNotifications()
 
   const fetchSharesByPostId = async (postId: string): Promise<Share[]> => {
     try {
@@ -38,7 +40,7 @@ export function useShares() {
         userId: currentUser.value.id,
         title: originalPost.title,
         content: originalPost.content,
-        image: originalPost.image,
+        images: originalPost.images ? [...originalPost.images] : [],
         sharedFromId: postId
       })
 
@@ -47,6 +49,21 @@ export function useShares() {
         postId,
         userId: currentUser.value.id
       })
+      
+      // Create notification for post owner
+      try {
+        // Don't notify if user shares their own post
+        if (originalPost.userId !== currentUser.value.id) {
+          await createNotification({
+            userId: originalPost.userId,
+            fromUserId: currentUser.value.id,
+            type: 'share',
+            postId
+          })
+        }
+      } catch (err) {
+        console.error('Failed to create share notification:', err)
+      }
 
       // Refresh the shares cache for this post
       await fetchSharesByPostId(postId)

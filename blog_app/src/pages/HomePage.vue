@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid mt-4">
+  <div class="home-page">
+    <div class="container-fluid mt-4">
     <div class="row">
       <!-- Left column: Messages sidebar (only for authenticated users) -->
       <div v-if="currentUser" class="col-md-3">
@@ -8,6 +9,16 @@
 
       <!-- Center column: News feed -->
       <div :class="currentUser ? 'col-md-6' : 'col-md-9'">
+        <!-- Create post bar (only for authenticated users) -->
+        <div v-if="currentUser" class="mb-4">
+          <PostCreatorBar 
+            @click="showPostFormModal = true"
+            @upload="handleUploadClick"
+            @video-click="handleVideoClick"
+            @emotion-click="handleEmotionClick"
+          />
+        </div>
+
         <!-- Loading indicator -->
         <div v-if="loading" class="text-center py-5">
           <div class="spinner-border text-primary loading-pulse" role="status">
@@ -48,6 +59,14 @@
         <SuggestionsSidebar />
       </div>
     </div>
+
+    <!-- Post Form Modal -->
+    <PostFormModal
+      v-model="showPostFormModal"
+      ref="modalRef"
+      @submit="handleCreatePost"
+    />
+    </div>
   </div>
 </template>
 
@@ -60,14 +79,19 @@ import { apiService } from '../services/apiService'
 import PostCard from '../components/PostCard.vue'
 import MessagesSidebar from '../components/MessagesSidebar.vue'
 import SuggestionsSidebar from '../components/SuggestionsSidebar.vue'
-import type { User } from '../types'
+import PostFormModal from '../components/PostFormModal.vue'
+import PostCreatorBar from '../components/PostCreatorBar.vue'
+import type { User, CreatePostData, UpdatePostData } from '../types'
 
 const router = useRouter()
-const { posts, loading, fetchPosts, deletePost } = usePosts()
+const { posts, loading, fetchPosts, deletePost, createPost } = usePosts()
 const { currentUser } = useAuth()
 
 // Store authors for each post
 const postAuthors = ref<Record<string, User>>({})
+const modalRef = ref<InstanceType<typeof PostFormModal> | null>(null)
+const showPostFormModal = ref(false)
+const formSubmitting = ref(false)
 
 // Filter posts that have authors loaded
 const postsWithAuthors = computed(() => {
@@ -117,6 +141,68 @@ const handleDelete = async (postId: string) => {
   }
 }
 
+// Handle create post
+const handleCreatePost = async (postData: CreatePostData | UpdatePostData) => {
+  try {
+    formSubmitting.value = true
+    await createPost(postData as CreatePostData)
+    
+    // Reset form and reload posts
+    showPostFormModal.value = false
+    await loadPosts()
+    
+    // Show success message
+    const success = document.createElement('div')
+    success.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x'
+    success.setAttribute('role', 'alert')
+    success.style.zIndex = '9999'
+    success.style.marginTop = '20px'
+    success.innerHTML = '<i class="bi bi-check-circle me-2"></i>Post created successfully! <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+    document.body.appendChild(success)
+    
+    setTimeout(() => success.remove(), 4000)
+  } catch (error) {
+    if (modalRef.value) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create post'
+      modalRef.value.setError(errorMessage)
+    }
+  } finally {
+    formSubmitting.value = false
+  }
+}
+
+// Handle upload click
+const handleUploadClick = () => {
+  showPostFormModal.value = true
+  // Focus on file input after form opens
+  setTimeout(() => {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+    fileInput?.click()
+  }, 100)
+}
+
+// Handle video click
+const handleVideoClick = () => {
+  showPostFormModal.value = true
+  // Trigger video input after modal opens
+  setTimeout(() => {
+    if (modalRef.value) {
+      modalRef.value.triggerVideoInput()
+    }
+  }, 100)
+}
+
+// Handle emotion click
+const handleEmotionClick = () => {
+  showPostFormModal.value = true
+  // Trigger emotion selector after modal opens
+  setTimeout(() => {
+    if (modalRef.value) {
+      modalRef.value.triggerEmotionSelector()
+    }
+  }, 100)
+}
+
 onMounted(() => {
   loadPosts()
 })
@@ -141,4 +227,14 @@ onMounted(() => {
   margin-bottom: 2rem;
   animation-duration: 8s;
 }
+  .home-page {
+    background: transparent;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 576px) {
+    .home-page {
+      background: #fff;
+    }
+  }
 </style>

@@ -1,8 +1,10 @@
 <template>
-  <div class="container mt-4">
+  <div class="profile-page">
+    <div class="container mt-4">
     <div class="row">
       <!-- Profile Edit Form -->
-      <div class="col-12 col-lg-4 mb-4">
+      <div class="col-12 col-lg-3 mb-4">
+        <div class="sticky-sidebar">
         <div class="card">
           <div class="card-header bg-primary text-white">
             <h5 class="mb-0">
@@ -72,13 +74,21 @@
 
               <div class="mb-3">
                 <label for="avatar" class="form-label fw-semibold">{{ t('profile.avatar') }}</label>
-                <input
-                  id="avatar"
-                  v-model="formData.avatar"
-                  type="text"
-                  class="form-control"
-                  placeholder="https://example.com/avatar.jpg"
-                />
+                <div class="d-flex align-items-center gap-3">
+                  <div>
+                    <input
+                      id="avatarFile"
+                      type="file"
+                      accept="image/*"
+                      @change="handleAvatarSelected"
+                      class="form-control"
+                    />
+                    <small class="text-muted">{{ t('profile.avatarHelp') }}</small>
+                  </div>
+                  <div v-if="formData.avatar" class="avatar-preview">
+                    <img :src="formData.avatar" alt="avatar-preview" width="80" height="80" class="rounded-circle" style="object-fit: cover;" />
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3">
@@ -104,10 +114,20 @@
             </form>
           </div>
         </div>
+        </div>
       </div>
 
       <!-- Posts Section -->
-      <div class="col-12 col-lg-8">
+      <div class="col-12 col-lg-6">
+        <!-- Create post bar -->
+        <div class="mb-4">
+          <PostCreatorBar 
+            @click="showPostForm = true"
+            @upload="handleUploadClick"
+          />
+        </div>
+
+        <!-- My Posts header -->
         <div class="card mb-3">
           <div class="card-header bg-white border-bottom">
             <div class="d-flex justify-content-between align-items-center">
@@ -152,8 +172,23 @@
           />
         </div>
       </div>
+
+      <!-- Messages Section -->
+      <div class="col-12 col-lg-3 mb-4">
+        <div class="sticky-sidebar">
+        <MessagesSidebar />
+        </div>
+      </div>
+    </div>
     </div>
   </div>
+
+  <!-- Post Form Modal -->
+  <PostFormModal
+    v-model="showPostForm"
+    ref="postFormRef"
+    @submit="handleCreatePost"
+  />
 </template>
 
 <script setup lang="ts">
@@ -164,13 +199,20 @@ import { useUser } from '../composables/useUser'
 import { usePosts } from '../composables/usePosts'
 import { useLocale } from '../composables/useLocale'
 import PostCard from '../components/PostCard.vue'
-import type { UpdateUserData } from '../types'
+import PostFormModal from '../components/PostFormModal.vue'
+import PostCreatorBar from '../components/PostCreatorBar.vue'
+import MessagesSidebar from '../components/MessagesSidebar.vue'
+import type { UpdateUserData, CreatePostData, UpdatePostData } from '../types'
 
 const router = useRouter()
 const { currentUser, checkAuth } = useAuth()
 const { updateUser } = useUser()
-const { posts, loading: postsLoading, fetchPostsByUserId, deletePost } = usePosts()
+const { posts, loading: postsLoading, fetchPostsByUserId, deletePost, createPost } = usePosts()
 const { t } = useLocale()
+
+const postFormRef = ref<InstanceType<typeof PostFormModal> | null>(null)
+const showPostForm = ref(false)
+const formSubmitting = ref(false)
 
 const formData = reactive({
   name: '',
@@ -324,6 +366,54 @@ const handleDelete = async (postId: string) => {
   }
 }
 
+// Handle create post
+const handleCreatePost = async (postData: CreatePostData | UpdatePostData) => {
+  try {
+    formSubmitting.value = true
+    await createPost(postData as CreatePostData)
+    
+    // Reset form and reload posts
+    showPostForm.value = false
+    await loadPosts()
+    
+    // Show success message
+    successMessage.value = 'Post created successfully!'
+    
+    // Scroll to top to show success message
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } catch (error) {
+    if (postFormRef.value) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create post'
+      postFormRef.value.setError(errorMessage)
+    }
+  } finally {
+    formSubmitting.value = false
+  }
+}
+
+// Handle upload click
+const handleUploadClick = () => {
+  showPostForm.value = true
+  // Focus on file input after form opens
+  setTimeout(() => {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement
+    fileInput?.click()
+  }, 100)
+}
+
+// Avatar file selected for profile
+const handleAvatarSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files && input.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    formData.avatar = reader.result as string
+  }
+  reader.readAsDataURL(file)
+}
+
 onMounted(() => {
   // Check authentication
   checkAuth()
@@ -399,12 +489,41 @@ onMounted(() => {
 }
 
 @media (max-width: 991px) {
-  .col-12.col-lg-4 {
+  .col-12.col-lg-3:first-child {
     order: 2;
   }
   
-  .col-12.col-lg-8 {
+  .col-12.col-lg-6 {
     order: 1;
+  }
+
+  .col-12.col-lg-3:last-child {
+    order: 3;
+  }
+}
+
+/* Sticky sidebars */
+.sticky-sidebar {
+  position: sticky;
+  top: 20px;
+  z-index: 10;
+}
+
+/* Disable sticky on mobile */
+@media (max-width: 991px) {
+  .sticky-sidebar {
+    position: static;
+  }
+}
+
+.profile-page {
+  background: transparent;
+  min-height: 100vh;
+}
+
+@media (max-width: 576px) {
+  .profile-page {
+    background: #fff;
   }
 }
 </style>

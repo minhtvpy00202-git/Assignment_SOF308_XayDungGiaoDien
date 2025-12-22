@@ -17,10 +17,13 @@ interface TranslatedComment extends Comment {
   isTranslated?: boolean
 }
 
+// Shared state across all components
+const isTranslating = ref(false)
+const translationEnabled = ref(true)
+let preferencesLoaded = false
+
 export function useContentTranslation() {
   const { locale } = useLocale()
-  const isTranslating = ref(false)
-  const translationEnabled = ref(true)
 
   // Get translation enabled state from localStorage
   const loadTranslationPreference = () => {
@@ -65,11 +68,9 @@ export function useContentTranslation() {
     try {
       isTranslating.value = true
 
-      // Translate title and content
-      const [translatedTitle, translatedContent] = await translationService.translateBatch(
-        [post.title, post.content],
-        locale.value
-      )
+      // Translate title and content separately
+      const translatedTitle = await translationService.translateText(post.title, locale.value)
+      const translatedContent = await translationService.translateText(post.content, locale.value)
 
       // Ensure we have valid strings (fallback to original if translation fails)
       const finalTitle = translatedTitle || post.title
@@ -232,8 +233,11 @@ export function useContentTranslation() {
     }
   })
 
-  // Load preferences on initialization
-  loadTranslationPreference()
+  // Load preferences on initialization (only once)
+  if (!preferencesLoaded) {
+    loadTranslationPreference()
+    preferencesLoaded = true
+  }
 
   return {
     // State

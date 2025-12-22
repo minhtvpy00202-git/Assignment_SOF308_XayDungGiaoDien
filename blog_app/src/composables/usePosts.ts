@@ -171,8 +171,8 @@ export function usePosts() {
   }
 
   return {
-    posts: readonly(posts),
-    currentPost: readonly(currentPost),
+    posts,
+    currentPost,
     loading: readonly(loading),
     error: readonly(error),
     fetchPosts,

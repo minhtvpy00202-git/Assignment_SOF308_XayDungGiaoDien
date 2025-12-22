@@ -26,7 +26,16 @@ export default {
     editPost: 'Edit Post',
     title: 'Title',
     content: 'Content',
-    image: 'Image (URL)',
+    image: 'Image',
+    video: 'Video',
+    emotion: 'Emotion',
+    selectEmotion: 'Select Emotion',
+    addEmotion: 'Add Emotion',
+    uploadImage: 'Upload Image',
+    uploadVideo: 'Upload Video',
+    removeVideoFirst: 'Remove video first to add images',
+    removeImagesFirst: 'Remove images first to add video',
+    placeholder: "What are you thinking?",
     submit: 'Post',
     update: 'Update',
     cancel: 'Cancel',
@@ -39,6 +48,7 @@ export default {
     likes: 'likes',
     comments: 'comments',
     shares: 'shares',
+    loginToComment: 'Login to comment',
     noPostsYet: 'No posts yet',
     writeComment: 'Write a comment...',
     postComment: 'Post',
@@ -49,7 +59,14 @@ export default {
     loadError: 'Unable to load post',
     deleteError: 'Unable to delete post',
     confirmDelete: 'Are you sure you want to delete this post?',
-    readMore: 'Read more'
+    readMore: 'Read more',
+    privacy: 'Privacy',
+    privacyPublic: 'Public',
+    privacyFriends: 'Friends',
+    privacyPrivate: 'Only me',
+    privacyPublicDesc: 'Everyone can see this post',
+    privacyFriendsDesc: 'Only you and your friends can see',
+    privacyPrivateDesc: 'Only you can see this post'
   },
   profile: {
     profile: 'Profile',
@@ -66,11 +83,26 @@ export default {
   },
   messages: {
     messages: 'Messages',
+    searchMessages: 'Search messages...',
+    user: 'User',
     noFriends: 'No friends yet. Add friends to start messaging!',
     typeMessage: 'Type a message...',
     send: 'Send',
     selectConversation: 'Select a conversation to start',
-    active: 'Active now'
+    active: 'Active now',
+    offline: 'Offline',
+    lastSeen: 'Last seen {minutes} minutes ago',
+    lastSeenHours: 'Last seen {hours} hours ago', 
+    lastSeenDays: 'Last seen {days} days ago',
+    sent: 'Sent',
+    delivered: 'Delivered',
+    seen: 'Seen',
+    startConversation: 'Start a conversation'
+  },
+  comment: {
+    reply: 'Reply',
+    replyPlaceholder: 'Write a reply...',
+    send: 'Send'
   },
   suggestions: {
     suggestions: 'Friend Suggestions',
@@ -103,7 +135,11 @@ export default {
     passwordMismatch: 'Passwords do not match',
     loginFailed: 'Invalid email or password',
     registerFailed: 'Registration failed',
-    emailExists: 'Email already exists'
+    emailExists: 'Email already exists',
+    invalidImageType: 'Please select a valid image file',
+    imageTooLarge: 'Image size must be less than 5MB',
+    invalidVideoType: 'Please select a valid video file',
+    videoTooLarge: 'Video size must be less than 50MB'
   },
   language: {
     english: 'English',
@@ -143,6 +179,15 @@ export default {
     accept: 'Accept',
     reject: 'Reject'
   },
+
+  settings: {
+    animations: 'Animations'
+  },
+  privacy: {
+    public: 'Public',
+    friends: 'Friends only',
+    private: 'Only me'
+  },
   translation: {
     translating: 'Translating...',
     translated: 'Translated',
@@ -158,5 +203,23 @@ export default {
     tipTitle: 'Pro Tip!',
     tipMessage: 'You can change the language to automatically translate all posts.',
     changeLanguage: 'Change Language'
+  },
+  chatbot: {
+    title: 'Virtual Assistant',
+    subtitle: 'Always ready to help you',
+    welcome: 'Hello! I am your virtual assistant. How can I help you today?',
+    placeholder: 'Type your question...',
+    quickPost: 'How to post',
+    quickFriend: 'How to add friends',
+    quickMessage: 'How to message',
+    quickPrivacy: 'Privacy settings'
+  },
+  sentiment: {
+    positive: 'Positive',
+    negative: 'Negative',
+    neutral: 'Neutral',
+    analyze: 'Analyze Sentiment',
+    analyzing: 'Analyzing...',
+    confidence: 'Confidence'
   }
 }

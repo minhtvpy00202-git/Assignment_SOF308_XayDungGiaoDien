@@ -73,6 +73,26 @@
                 </div>
               </div>
 
+              <!-- Avatar Upload -->
+              <div class="mb-3">
+                <label for="avatar" class="form-label">{{ t('profile.avatar') }}</label>
+                <div class="d-flex align-items-center gap-3">
+                  <div>
+                    <input
+                      id="registerAvatarFile"
+                      type="file"
+                      accept="image/*"
+                      @change="handleAvatarSelected"
+                      class="form-control"
+                    />
+                    <small class="text-muted">{{ t('profile.avatarHelp') }}</small>
+                  </div>
+                  <div v-if="formData.avatar" class="avatar-preview">
+                    <img :src="formData.avatar" alt="avatar-preview" width="80" height="80" class="rounded-circle" style="object-fit: cover;" />
+                  </div>
+                </div>
+              </div>
+
               <!-- Error Message -->
               <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
@@ -120,7 +140,8 @@ const { t } = useLocale()
 const formData = ref({
   name: '',
   email: '',
-  password: ''
+  password: '',
+  avatar: ''
 })
 
 const errors = ref<Record<string, string>>({})
@@ -174,6 +195,19 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
+
+// Avatar file selected handler
+const handleAvatarSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files && input.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    formData.value.avatar = reader.result as string
+  }
+  reader.readAsDataURL(file)
+}
 </script>
 
 <style scoped>
@@ -185,7 +219,6 @@ const handleSubmit = async () => {
 .card {
   border: none;
   border-radius: 16px;
-  backdrop-filter: blur(10px);
 }
 
 .logo-container {

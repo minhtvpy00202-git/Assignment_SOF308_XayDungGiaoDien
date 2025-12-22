@@ -26,7 +26,16 @@ export default {
     editPost: 'Chỉnh sửa bài viết',
     title: 'Tiêu đề',
     content: 'Nội dung',
-    image: 'Hình ảnh (URL)',
+    image: 'Hình ảnh',
+    video: 'Video',
+    emotion: 'Cảm xúc',
+    selectEmotion: 'Chọn cảm xúc',
+    addEmotion: 'Thêm cảm xúc',
+    uploadImage: 'Tải lên hình ảnh',
+    uploadVideo: 'Tải lên video',
+    removeVideoFirst: 'Xóa video trước khi thêm hình ảnh',
+    removeImagesFirst: 'Xóa hình ảnh trước khi thêm video',
+    placeholder: 'Bạn đang nghĩ gì thế?',
     submit: 'Đăng bài',
     update: 'Cập nhật',
     cancel: 'Hủy',
@@ -39,6 +48,7 @@ export default {
     likes: 'lượt thích',
     comments: 'bình luận',
     shares: 'lượt chia sẻ',
+    loginToComment: 'Đăng nhập để bình luận',
     noPostsYet: 'Chưa có bài viết nào',
     writeComment: 'Viết bình luận...',
     postComment: 'Đăng',
@@ -49,7 +59,14 @@ export default {
     loadError: 'Không thể tải bài viết',
     deleteError: 'Không thể xóa bài viết',
     confirmDelete: 'Bạn có chắc chắn muốn xóa bài viết này?',
-    readMore: 'Xem thêm'
+    readMore: 'Xem thêm',
+    privacy: 'Quyền riêng tư',
+    privacyPublic: 'Công khai',
+    privacyFriends: 'Bạn bè',
+    privacyPrivate: 'Chỉ mình tôi',
+    privacyPublicDesc: 'Mọi người đều có thể xem bài viết này',
+    privacyFriendsDesc: 'Chỉ bạn và bạn bè có thể xem',
+    privacyPrivateDesc: 'Chỉ bạn có thể xem bài viết này'
   },
   profile: {
     profile: 'Hồ sơ',
@@ -58,7 +75,7 @@ export default {
     email: 'Email',
     password: 'Mật khẩu mới',
     intro: 'Giới thiệu',
-    avatar: 'Avatar (URL)',
+    avatar: 'Avatar',
     save: 'Lưu thay đổi',
     posts: 'Bài viết',
     friends: 'Bạn bè',
@@ -66,11 +83,26 @@ export default {
   },
   messages: {
     messages: 'Tin nhắn',
+    searchMessages: 'Tìm kiếm tin nhắn...',
+    user: 'Người dùng',
     noFriends: 'Chưa có bạn bè. Thêm bạn để bắt đầu nhắn tin!',
     typeMessage: 'Nhập tin nhắn...',
     send: 'Gửi',
     selectConversation: 'Chọn một cuộc trò chuyện để bắt đầu',
-    active: 'Đang hoạt động'
+    active: 'Đang hoạt động',
+    offline: 'Ngoại tuyến',
+    lastSeen: 'Hoạt động {minutes} phút trước',
+    lastSeenHours: 'Hoạt động {hours} giờ trước',
+    lastSeenDays: 'Hoạt động {days} ngày trước', 
+    sent: 'Đã gửi',
+    delivered: 'Đã nhận',
+    seen: 'Đã xem',
+    startConversation: 'Bắt đầu cuộc trò chuyện'
+  },
+  comment: {
+    reply: 'Trả lời',
+    replyPlaceholder: 'Viết trả lời...',
+    send: 'Gửi'
   },
   suggestions: {
     suggestions: 'Gợi ý kết bạn',
@@ -103,7 +135,11 @@ export default {
     passwordMismatch: 'Mật khẩu không khớp',
     loginFailed: 'Email hoặc mật khẩu không đúng',
     registerFailed: 'Đăng ký thất bại',
-    emailExists: 'Email đã tồn tại'
+    emailExists: 'Email đã tồn tại',
+    invalidImageType: 'Vui lòng chọn file hình ảnh hợp lệ',
+    imageTooLarge: 'Kích thước hình ảnh phải nhỏ hơn 5MB',
+    invalidVideoType: 'Vui lòng chọn file video hợp lệ',
+    videoTooLarge: 'Kích thước video phải nhỏ hơn 50MB'
   },
   language: {
     english: 'English',
@@ -143,6 +179,15 @@ export default {
     accept: 'Chấp nhận',
     reject: 'Từ chối'
   },
+
+  settings: {
+    animations: 'Hiệu ứng động'
+  },
+  privacy: {
+    public: 'Công khai',
+    friends: 'Chỉ bạn bè',
+    private: 'Chỉ mình tôi'
+  },
   translation: {
     translating: 'Đang dịch...',
     translated: 'Đã dịch',
@@ -158,5 +203,23 @@ export default {
     tipTitle: 'Mẹo hay!',
     tipMessage: 'Bạn có thể thay đổi ngôn ngữ để tự động dịch tất cả bài viết.',
     changeLanguage: 'Đổi ngôn ngữ'
+  },
+  chatbot: {
+    title: 'Trợ lý ảo',
+    subtitle: 'Luôn sẵn sàng hỗ trợ bạn',
+    welcome: 'Xin chào! Mình là trợ lý ảo. Mình có thể giúp gì cho bạn?',
+    placeholder: 'Nhập câu hỏi của bạn...',
+    quickPost: 'Cách đăng bài',
+    quickFriend: 'Cách kết bạn',
+    quickMessage: 'Cách nhắn tin',
+    quickPrivacy: 'Quyền riêng tư'
+  },
+  sentiment: {
+    positive: 'Tích cực',
+    negative: 'Tiêu cực',
+    neutral: 'Trung tính',
+    analyze: 'Phân tích cảm xúc',
+    analyzing: 'Đang phân tích...',
+    confidence: 'Độ tin cậy'
   }
 }

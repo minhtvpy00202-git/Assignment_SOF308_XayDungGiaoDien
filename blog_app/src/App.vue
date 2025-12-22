@@ -2,37 +2,36 @@
 import { onMounted } from 'vue'
 import { useAuth } from './composables/useAuth'
 import { useChatPopups } from './composables/useChatPopups'
+import { useOnlineStatus } from './composables/useOnlineStatus'
+
 import AppNavbar from './components/AppNavbar.vue'
 import ChatPopup from './components/ChatPopup.vue'
+import ChatBotWidget from './components/ChatBotWidget.vue'
 import MessageNotificationListener from './components/MessageNotificationListener.vue'
-import TranslationBanner from './components/TranslationBanner.vue'
-import TranslationTooltip from './components/TranslationTooltip.vue'
+import ChristmasEffects from './components/ChristmasEffects.vue'
+import WinterBackground from './components/WinterBackground.vue'
+
 
 const { checkAuth } = useAuth()
 const { chatPopups, closeChatPopup, minimizeChatPopup } = useChatPopups()
 
-// Check authentication status on app mount
+// Initialize online status tracking
+useOnlineStatus()
+
 onMounted(() => {
   checkAuth()
 })
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="christmas-mode">
+    <WinterBackground />
+    <ChristmasEffects />
     <AppNavbar />
-    
-    <!-- Translation Feature Banner -->
-    <TranslationBanner />
-    
-    <!-- Translation Tooltip -->
-    <TranslationTooltip />
-    
     <router-view />
-    
-    <!-- Message Notification Listener -->
+
     <MessageNotificationListener />
-    
-    <!-- Chat Popups -->
+
     <div class="chat-popups-container">
       <ChatPopup
         v-for="(popup, index) in chatPopups.filter(p => !p.isMinimized)"
@@ -45,11 +44,17 @@ onMounted(() => {
         @minimize="minimizeChatPopup(popup.id)"
       />
     </div>
+
+    <!-- ChatBot Widget -->
+    <ChatBotWidget />
   </div>
 </template>
 
 <style>
 #app {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
 }
+
 </style>

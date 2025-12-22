@@ -90,8 +90,7 @@ onMounted(() => {
   max-width: 600px;
   width: 90%;
   margin: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;

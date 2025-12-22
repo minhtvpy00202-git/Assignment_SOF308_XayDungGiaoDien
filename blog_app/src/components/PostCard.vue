@@ -17,15 +17,18 @@
           <img :src="displayAuthor.avatar" :alt="displayAuthor.name" class="rounded-circle me-2" width="40" height="40">
           <div>
             <h6 class="mb-0 text-dark">{{ displayAuthor.name }}</h6>
-            <small class="text-muted">{{ formattedDate }}</small>
+            <small class="text-muted">
+              {{ formattedDate }}
+              <i :class="['bi', privacyIcon, 'ms-1']" :title="privacyTooltip"></i>
+            </small>
           </div>
         </router-link>
       </div>
 
       <!-- Translation controls -->
-      <div v-if="translationEnabled && (translatedPost || isTranslating)" class="mb-2">
+      <div v-if="translationEnabled && (translatedPost || localTranslating)" class="mb-2">
         <div class="d-flex align-items-center gap-2">
-          <div v-if="isTranslating" class="d-flex align-items-center text-muted">
+          <div v-if="localTranslating" class="d-flex align-items-center text-muted">
             <div class="spinner-border spinner-border-sm me-2" role="status">
               <span class="visually-hidden">{{ t('common.loading') }}</span>
             </div>
@@ -38,8 +41,7 @@
             </small>
             <button 
               @click="toggleOriginal"
-              class="btn btn-sm btn-outline-secondary"
-              style="font-size: 0.75rem; padding: 0.125rem 0.5rem;"
+              class="btn btn-sm translation-toggle-btn"
             >
               {{ showOriginal ? t('translation.showTranslated') : t('translation.showOriginal') }}
             </button>
@@ -56,11 +58,39 @@
         </span>
         <span v-else>{{ displayPost.content }}</span>
       </p>
+
+      <!-- Sentiment Analysis -->
+      <div v-if="post.sentiment" class="mb-2">
+        <SentimentBadge 
+          :sentiment="post.sentiment" 
+          :confidence="post.sentiment_score"
+          :show-confidence="true"
+          size="small"
+        />
+      </div>
+      
+      <!-- Always show analyze button for testing -->
+      <div v-if="!post.sentiment" class="mb-2">
+        <button 
+          @click="handleAnalyzeSentiment"
+          :disabled="isAnalyzingSentiment"
+          class="btn btn-sm btn-outline-info"
+        >
+          <span v-if="isAnalyzingSentiment" class="spinner-border spinner-border-sm me-1" role="status"></span>
+          {{ isAnalyzingSentiment ? `🔍 ${t('sentiment.analyzing')}` : `🎭 ${t('sentiment.analyze')}` }}
+        </button>
+      </div>
     </div>
 
-    <!-- Post image (outside card-body for full width) -->
-    <div v-if="displayPost.image" class="post-image-container">
-      <img :src="displayPost.image" class="post-image" :alt="displayPost.title">
+    <!-- Post images (outside card-body for full width) -->
+    <div v-if="displayImages.length === 1" class="post-image-container">
+      <img :src="displayImages[0]" class="post-image" :alt="displayPost.title">
+    </div>
+
+    <div v-else-if="displayImages.length > 1" :class="['post-images-grid', displayImages.length === 2 ? 'two' : displayImages.length === 3 ? 'three' : displayImages.length === 4 ? 'four' : '']">
+      <div v-for="(src, idx) in displayImages" :key="idx" class="post-image-cell">
+        <img :src="src" class="post-image-multi" :alt="displayPost.title" />
+      </div>
     </div>
 
     <div class="card-body pt-0">
@@ -72,9 +102,8 @@
           <small>{{ shareCount }} {{ t('post.shares') }}</small>
           <small 
             class="comments-toggle" 
-            @click="toggleComments"
+            @click="openCommentsModal"
             style="cursor: pointer; user-select: none;"
-            :class="{ 'text-primary': showComments }"
           >
             {{ commentCount }} {{ t('post.comments') }}
           </small>
@@ -100,21 +129,14 @@
       </div>
     </div>
 
-    <!-- Inline comments section (only show when toggled) -->
-    <div v-if="showComments" class="card-body pt-0">
-      <CommentList
-        :postId="post.sharedFromId || post.id"
-        :comments="comments"
-        :loading="commentsLoading"
-      />
-
-      <!-- Comment form (only for authenticated users) -->
-      <CommentForm
-        v-if="currentUser"
-        :postId="post.sharedFromId || post.id"
-        @comment-created="handleCommentCreated"
-      />
-    </div>
+    <!-- Comment Modal -->
+    <CommentModal
+      :show="showCommentsModal"
+      :post="originalPost || post"
+      :author="displayAuthor"
+      @close="showCommentsModal = false"
+      @comment-created="handleCommentCreated"
+    />
   </div>
 </template>
 
@@ -126,12 +148,14 @@ import { useLocale } from '../composables/useLocale'
 import { useContentTranslation } from '../composables/useContentTranslation'
 import { useLikes } from '../composables/useLikes'
 import { useShares } from '../composables/useShares'
-import { useComments } from '../composables/useComments'
+// @ts-ignore
+import { useSentimentAnalysis } from '../composables/useSentimentAnalysis'
 import { apiService } from '../services/apiService'
 import LikeButton from './LikeButton.vue'
 import ShareButton from './ShareButton.vue'
-import CommentForm from './CommentForm.vue'
-import CommentList from './CommentList.vue'
+import CommentModal from './CommentModal.vue'
+// @ts-ignore
+import SentimentBadge from './SentimentBadge.vue'
 
 interface Props {
   post: Post
@@ -147,10 +171,10 @@ const emit = defineEmits<{
 
 const { currentUser } = useAuth()
 const { t, locale } = useLocale()
-const { translatePost, translationEnabled, isTranslating } = useContentTranslation()
+const { translatePost, translationEnabled } = useContentTranslation()
 const { getLikeCount } = useLikes()
 const { getShareCount } = useShares()
-const { fetchCommentsByPostId, comments } = useComments()
+const { isAnalyzing: isAnalyzingSentiment, analyzePostSentiment, error } = useSentimentAnalysis()
 
 const likeCount = ref(0)
 const shareCount = ref(0)
@@ -158,8 +182,7 @@ const commentCount = ref(0)
 const sharingUser = ref<User | null>(null)
 const originalPost = ref<Post | null>(null)
 const originalAuthor = ref<User | null>(null)
-const commentsLoading = ref(false)
-const showComments = ref(false) // Comments hidden by default
+const showCommentsModal = ref(false) // Modal for comments
 const isContentExpanded = ref(false) // Content expansion state
 const translatedPost = ref<Post | null>(null)
 const showOriginal = ref(false)
@@ -185,6 +208,14 @@ const displayPost = computed(() => {
   return translatedPost.value || basePost
 })
 
+// Normalize images for display (support legacy single `image` field)
+const displayImages = computed(() => {
+  const p: any = displayPost.value || {}
+  if (Array.isArray(p.images) && p.images.length) return p.images
+  if (p.image) return [p.image]
+  return []
+})
+
 // Format the creation date
 const formattedDate = computed(() => {
   const date = new Date(props.post.createdAt)
@@ -197,6 +228,59 @@ const formattedDate = computed(() => {
   })
 })
 
+// Get privacy icon based on post privacy setting
+const privacyIcon = computed(() => {
+  const privacy = props.post.privacy || 'public'
+  switch (privacy) {
+    case 'public':
+      return 'bi-globe'
+    case 'friends':
+      return 'bi-people-fill'
+    case 'private':
+      return 'bi-lock-fill'
+    default:
+      return 'bi-globe'
+  }
+})
+
+// Get privacy tooltip text
+const privacyTooltip = computed(() => {
+  const privacy = props.post.privacy || 'public'
+  switch (privacy) {
+    case 'public':
+      return t('privacy.public')
+    case 'friends':
+      return t('privacy.friends')
+    case 'private':
+      return t('privacy.private')
+    default:
+      return t('privacy.public')
+  }
+})
+
+// Check if current user can analyze sentiment (post owner or any logged in user)
+const canAnalyzeSentiment = computed(() => {
+  const result = currentUser.value && (
+    currentUser.value.id === props.post.userId || 
+    true // Allow any logged in user to analyze sentiment
+  )
+  console.log('canAnalyzeSentiment:', result, 'currentUser:', currentUser.value, 'post.sentiment:', props.post.sentiment)
+  return result
+})
+
+// Handle sentiment analysis
+const handleAnalyzeSentiment = async () => {
+  if (!canAnalyzeSentiment.value) return
+  
+  const success = await analyzePostSentiment(props.post)
+  if (success) {
+    // Không cần reload - post đã được cập nhật reactive
+    console.log('✅ Sentiment analysis completed successfully!')
+  } else {
+    console.error('❌ Sentiment analysis failed:', error.value)
+  }
+}
+
 // Load interaction counts
 const loadCounts = async () => {
   try {
@@ -206,20 +290,17 @@ const loadCounts = async () => {
     likeCount.value = await getLikeCount(postIdForCounts)
     shareCount.value = await getShareCount(postIdForCounts)
     
-    // Fetch comments to get count (ascending order for inline display per Requirement 10.5)
-    commentsLoading.value = true
-    await fetchCommentsByPostId(postIdForCounts, 'asc')
-    commentCount.value = comments.value.length
+    // Get comment count without loading all comments
+    const allComments = await apiService.getCommentsByPostId(postIdForCounts)
+    commentCount.value = allComments.length
   } catch (error) {
     console.error('Failed to load counts:', error)
-  } finally {
-    commentsLoading.value = false
   }
 }
 
-// Toggle comments visibility
-const toggleComments = () => {
-  showComments.value = !showComments.value
+// Open comments modal
+const openCommentsModal = () => {
+  showCommentsModal.value = true
 }
 
 // Handle comment created event
@@ -268,13 +349,17 @@ const toggleOriginal = () => {
   showOriginal.value = !showOriginal.value
 }
 
+// Local translating state for this post
+const localTranslating = ref(false)
+
 // Translate post content
 const translatePostContent = async () => {
-  if (!translationEnabled.value || isTranslating.value) return
+  if (!translationEnabled.value || localTranslating.value) return
   
   const postToTranslate = originalPost.value || props.post
   
   try {
+    localTranslating.value = true
     const result = await translatePost(postToTranslate)
     if (result.isTranslated) {
       translatedPost.value = result
@@ -282,12 +367,15 @@ const translatePostContent = async () => {
     }
   } catch (error) {
     console.error('Error translating post:', error)
+  } finally {
+    localTranslating.value = false
   }
 }
 
 // Watch for locale changes to re-translate
 watch(locale, () => {
-  if (translationEnabled.value && translatedPost.value) {
+  if (translationEnabled.value) {
+    // Reset and re-translate when locale changes
     translatedPost.value = null
     showOriginal.value = false
     translatePostContent()
@@ -316,9 +404,8 @@ onMounted(() => {
 
 <style scoped>
 .card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -347,6 +434,8 @@ onMounted(() => {
   opacity: 1;
 }
 
+
+
 .rounded-circle {
   object-fit: cover;
 }
@@ -362,6 +451,29 @@ onMounted(() => {
 .comments-toggle:hover {
   color: #0d6efd !important;
   text-decoration: underline;
+}
+
+/* Translation toggle button */
+.translation-toggle-btn {
+  background: #165b33 !important;
+  color: white !important;
+  border: 1px solid #165b33 !important;
+  font-size: 0.75rem !important;
+  padding: 0 0.5rem !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+  text-transform: lowercase !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+}
+
+.translation-toggle-btn:hover {
+  background: white !important;
+  color: #165b33 !important;
+  border-color: #165b33 !important;
 }
 
 /* Enhanced 3D Post Image */
@@ -386,6 +498,44 @@ onMounted(() => {
 }
 
 .post-image-container:hover .post-image {
+  transform: scale(1.05);
+}
+
+/* Grid layout for multiple images */
+.post-images-grid {
+  display: grid;
+  gap: 4px;
+  margin: 0 1rem 1rem 1rem;
+}
+
+.post-images-grid.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.post-images-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.post-images-grid.four {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.post-image-cell {
+  overflow: hidden;
+  border-radius: 8px;
+  position: relative;
+  height: 200px;
+}
+
+.post-image-multi {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.post-image-cell:hover .post-image-multi {
   transform: scale(1.05);
 }
 
